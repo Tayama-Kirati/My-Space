@@ -14,6 +14,11 @@ A personal content management site built for daily use — journal writing, book
 - Year overview: 12 mini month cards at a glance
 - Entries saved locally — no account needed
 
+### Memories
+- Add pictures with captions.
+- Shows the timeline of the pictures added .
+
+
 ### Books
 - Personal reading list — **sorted highest star rating first**
 - Featured book section highlights the top pick
@@ -28,10 +33,10 @@ A personal content management site built for daily use — journal writing, book
 - Timeline sidebar grouped by month with jump-to links
 - Delete any memory with one click
 
-### Bikram Sambat Converter
+<!-- ### Bikram Sambat Converter
 A custom utility (`src/utils/nepaliDate.js`) converts any AD (Gregorian) date to its BS equivalent. Covers BS years 2000–2090. Used across the journal calendar to show the correct Nepali month and day numbers.
 
- 
+  -->
  
 
 ## Getting Started
@@ -55,4 +60,4 @@ The app runs at `http://localhost:5173` by default.
  
 
 Made with care in Nepal 🇳🇵
-# My-Space
+ 
