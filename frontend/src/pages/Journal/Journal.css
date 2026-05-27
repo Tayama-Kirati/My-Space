@@ -1,0 +1,359 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Lato:wght@300;400;700&display=swap');
+
+/* ── Featured month card ── */
+.jnl-featured {
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.12);
+  margin-bottom: 2.5rem;
+}
+
+/* header image / gradient banner */
+.jnl-banner {
+  position: relative;
+  width: 100%;
+  height: 240px;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+}
+.jnl-banner img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.jnl-banner-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.05) 60%);
+}
+.jnl-banner-text {
+  position: relative;
+  z-index: 1;
+  padding: 1.5rem 2rem 1.5rem;
+  color: #fff;
+}
+.jnl-banner-month {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.4rem, 7vw, 4rem);
+  font-weight: 900;
+  line-height: 1;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.4);
+  letter-spacing: -0.01em;
+}
+.jnl-banner-en-sub {
+  font-family: 'Lato', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  opacity: 0.75;
+  margin-top: 0.3rem;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.35);
+  text-transform: uppercase;
+}
+
+/* upload button on banner */
+.jnl-upload-btn {
+  position: absolute;
+  top: 0.8rem;
+  right: 0.8rem;
+  z-index: 2;
+  background: rgba(255,255,255,0.85);
+  border: none;
+  border-radius: 8px;
+  padding: 0.45rem 0.75rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #444;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  backdrop-filter: blur(4px);
+  transition: background 0.2s;
+}
+.jnl-upload-btn:hover { background: #fff; }
+
+/* navigation row above banner */
+.jnl-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.9rem 1.5rem;
+  border-bottom: 1px solid #f0f0f0;
+}
+.jnl-nav-arrows {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.jnl-arrow {
+  background: #f5f5f5;
+  border: none;
+  border-radius: 8px;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #555;
+  transition: background 0.15s, color 0.15s;
+}
+.jnl-arrow:hover { background: #e8eeff; color: #2e5aa8; }
+.jnl-nav-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 10rem;
+  text-align: center;
+}
+.jnl-nav-bs {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1a1a2e;
+  line-height: 1.2;
+}
+.jnl-nav-ad {
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: #6b7280;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-top: 0.1rem;
+}
+.jnl-today-btn {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #2e5aa8;
+  border: 1.5px solid #2e5aa8;
+  background: transparent;
+  border-radius: 6px;
+  padding: 0.35rem 0.9rem;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.jnl-today-btn:hover { background: #2e5aa8; color: #fff; }
+
+/* big calendar grid */
+.jnl-cal-wrap {
+  padding: 1.2rem 1.5rem 1.5rem;
+}
+.jnl-day-headers {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin-bottom: 0.4rem;
+}
+.jnl-day-hdr {
+  text-align: center;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  padding: 0.4rem 0;
+  color: #888;
+  text-transform: uppercase;
+}
+.jnl-day-hdr.sun { color: #c0392b; }
+.jnl-day-hdr.sat { color: #2e5aa8; }
+
+/* BS label above calendar grid */
+.jnl-bs-label {
+  text-align: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #2e5aa8;
+  text-transform: uppercase;
+  margin-bottom: 0.6rem;
+  padding: 0.25rem 0;
+  background: #eef3fb;
+  border-radius: 4px;
+}
+.jnl-bs-ad-hint {
+  font-weight: 400;
+  color: #6b7280;
+  letter-spacing: 0.04em;
+  font-size: 0.66rem;
+}
+
+.jnl-dates-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 3px;
+}
+
+/* ── Dual-date cell: BS large top-left, AD small bottom-right ── */
+.jnl-date-cell {
+  aspect-ratio: 1;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 4px 5px 3px 5px;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  transition: background 0.12s;
+  position: relative;
+  overflow: hidden;
+  min-height: 44px;
+}
+.jnl-date-cell:hover:not(:disabled) { background: #eef2ff; }
+.jnl-date-cell.today { background: #2e5aa8; }
+.jnl-date-cell.has-entry { background: #dce8ff; }
+.jnl-date-cell.today.has-entry { background: #2e5aa8; }
+.jnl-date-cell.future { cursor: default; opacity: 0.4; }
+
+/* BS date — big, top-left */
+.jnl-bs-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1;
+  color: #1a1a2e;
+}
+.jnl-date-cell.today      .jnl-bs-num { color: #fff; }
+.jnl-date-cell.has-entry  .jnl-bs-num { color: #1e3f7f; }
+.jnl-date-cell.sun-col    .jnl-bs-num { color: #c0392b; }
+.jnl-date-cell.sat-col    .jnl-bs-num { color: #2e5aa8; }
+.jnl-date-cell.today      .jnl-bs-num,
+.jnl-date-cell.today.sun-col .jnl-bs-num,
+.jnl-date-cell.today.sat-col .jnl-bs-num { color: #fff; }
+.jnl-date-cell.future     .jnl-bs-num { color: #bbb; }
+
+/* AD date — small, bottom-right */
+.jnl-ad-num {
+  position: absolute;
+  bottom: 3px;
+  right: 4px;
+  font-size: 0.58rem;
+  font-weight: 500;
+  line-height: 1;
+  color: #999;
+  opacity: 0.75;
+}
+.jnl-date-cell.today .jnl-ad-num { color: rgba(255,255,255,0.7); opacity: 1; }
+.jnl-date-cell.has-entry .jnl-ad-num { color: #5a7db5; }
+
+.jnl-date-cell .dot {
+  position: absolute;
+  bottom: 3px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: #2e5aa8;
+}
+.jnl-date-cell.today .dot { background: #fff; }
+
+/* ── Mini month cards ── */
+.jnl-mini-card {
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.jnl-mini-card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.12); }
+.jnl-mini-card.active-month { ring: 2px solid #2e5aa8; box-shadow: 0 0 0 2px #2e5aa8; }
+
+.jnl-mini-img {
+  width: 100%;
+  height: 90px;
+  position: relative;
+  overflow: hidden;
+}
+.jnl-mini-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.jnl-mini-upload {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s;
+  background: rgba(0,0,0,0.3);
+  cursor: pointer;
+  border: none;
+}
+.jnl-mini-card:hover .jnl-mini-upload { opacity: 1; }
+.jnl-mini-upload svg { color: #fff; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.5)); }
+
+.jnl-mini-hdr {
+  padding: 0.5rem 0.6rem 0.3rem;
+  font-family: 'Playfair Display', serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #1a1a2e;
+  text-align: center;
+}
+.jnl-mini-count {
+  text-align: center;
+  font-size: 0.6rem;
+  color: #2e5aa8;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.3rem;
+  min-height: 0.9rem;
+}
+
+.jnl-mini-day-hdrs {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  padding: 0 0.4rem;
+  margin-bottom: 2px;
+}
+.jnl-mini-dh {
+  text-align: center;
+  font-size: 0.5rem;
+  font-weight: 700;
+  color: #aaa;
+  padding: 1px 0;
+}
+.jnl-mini-dh.su { color: #c0392b; }
+
+.jnl-mini-dates {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 1px;
+  padding: 0 0.4rem 0.6rem;
+}
+.jnl-mini-date {
+  aspect-ratio: 1;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.58rem;
+  font-weight: 500;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: #555;
+  transition: background 0.1s;
+}
+.jnl-mini-date:hover:not(:disabled) { background: #eef2ff; }
+.jnl-mini-date.today   { background: #2e5aa8; color: #fff; font-weight: 700; border-radius: 50%; }
+.jnl-mini-date.hentry  { background: #dce8ff; color: #1e3f7f; border-radius: 50%; }
+.jnl-mini-date.future  { color: #ddd; cursor: default; }
+.jnl-mini-date.su-col  { color: #c0392b; }
+.jnl-mini-date.today.su-col { color: #fff; }
+
+/* responsive */
+@media (max-width: 640px) {
+  .jnl-banner { height: 180px; }
+  .jnl-cal-wrap { padding: 0.8rem; }
+}

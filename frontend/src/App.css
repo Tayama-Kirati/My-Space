@@ -1,0 +1,12 @@
+/* All styles managed by Tailwind CSS */
+.App {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+}
+

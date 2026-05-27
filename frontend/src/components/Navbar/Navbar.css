@@ -1,0 +1,243 @@
+/* ── Ghibli Navbar & Sidebar ───────────────────────────────────────────── */
+
+/* ── Top navbar ── */
+.nb-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
+  background: transparent;
+  border: none;
+  color: #5a4a35;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.nb-toggle:hover {
+  background: #ede8de;
+  color: #2a1f15;
+}
+
+/* mobile nav menu */
+.mobile-menu {
+  position: absolute;
+  top: 64px;
+  left: 0;
+  right: 0;
+  background: #fdfcf8;
+  border-bottom: 2px solid #d4c5a9;
+  z-index: 100;
+  animation: slideInUp 0.25s ease-out;
+}
+
+/* ── Top navbar auth buttons ── */
+.nb-auth-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.9rem;
+  border-radius: 8px;
+  border: 1.5px solid #d4c5a9;
+  color: #5a4a35;
+  font-size: 0.84rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+.nb-auth-link:hover {
+  background: #ede8de;
+  border-color: #a89070;
+  color: #2a1f15;
+}
+
+/* ── Sidebar drawer ── */
+.sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(26, 34, 18, 0.5);
+  z-index: 200;
+  backdrop-filter: blur(2px);
+  animation: fadeIn 0.2s ease;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 268px;
+  background: #1a2212;
+  z-index: 201;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(-100%);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 4px 0 32px rgba(26, 34, 18, 0.45);
+}
+.sidebar.open {
+  transform: translateX(0);
+}
+
+/* sidebar header */
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.25rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.sidebar-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  text-decoration: none;
+}
+.sidebar-logo-icon {
+  background: linear-gradient(135deg, #6aab55, #3d6632);
+  border-radius: 8px;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.sidebar-logo-text {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #e8e2d5;
+  letter-spacing: 0.02em;
+}
+.sidebar-close {
+  background: rgba(255, 255, 255, 0.06);
+  border: none;
+  border-radius: 8px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.45);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  flex-shrink: 0;
+}
+.sidebar-close:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #e8e2d5;
+}
+
+/* sidebar body */
+.sidebar-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.25rem 0.75rem;
+}
+.sidebar-section-label {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(201, 168, 76, 0.55);
+  padding: 0 0.6rem;
+  margin-bottom: 0.5rem;
+  margin-top: 0.25rem;
+}
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.7rem 0.9rem;
+  border-radius: 10px;
+  text-decoration: none;
+  color: rgba(232, 226, 213, 0.65);
+  font-size: 0.88rem;
+  font-weight: 500;
+  transition: background 0.15s, color 0.15s;
+  margin-bottom: 0.15rem;
+}
+.sidebar-link:hover {
+  background: rgba(78, 126, 64, 0.15);
+  color: #c8e6be;
+}
+.sidebar-link.active {
+  background: rgba(78, 126, 64, 0.28);
+  color: #8ecf7e;
+}
+.sidebar-link.active .sidebar-link-icon {
+  color: #6aab55;
+}
+.sidebar-link-icon {
+  flex-shrink: 0;
+  color: rgba(232, 226, 213, 0.38);
+  transition: color 0.15s;
+}
+.sidebar-link:hover .sidebar-link-icon {
+  color: rgba(232, 226, 213, 0.75);
+}
+
+/* colour dots per section — Ghibli palette */
+.dot-journal  { background: #c9a84c; }
+.dot-pomodoro { background: #6aab55; }
+.dot-memories { background: #e87397; }
+.dot-books    { background: #d4956a; }
+.dot-movies   { background: #7ab4d4; }
+.sidebar-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-left: auto;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.sidebar-link.active .sidebar-dot { opacity: 1; }
+
+/* sidebar footer */
+.sidebar-footer {
+  padding: 1rem 0.75rem 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+/* sidebar auth row */
+.sidebar-auth-row {
+  display: flex;
+  gap: 0.5rem;
+}
+.sidebar-login-btn,
+.sidebar-signup-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  flex: 1;
+  border-radius: 10px;
+  padding: 0.6rem 0.5rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+.sidebar-login-btn {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(232, 226, 213, 0.65);
+}
+.sidebar-login-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #e8e2d5;
+}
+.sidebar-signup-btn {
+  background: rgba(78, 126, 64, 0.22);
+  border: 1px solid rgba(78, 126, 64, 0.4);
+  color: #8ecf7e;
+}
+.sidebar-signup-btn:hover {
+  background: rgba(78, 126, 64, 0.38);
+  border-color: #6aab55;
+  color: #c8e6be;
+}
+
+@keyframes fadeIn    { from { opacity: 0 } to { opacity: 1 } }
+@keyframes slideInUp { from { transform: translateY(-8px); opacity: 0 } to { transform: none; opacity: 1 } }

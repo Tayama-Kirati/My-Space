@@ -1,0 +1,408 @@
+/* ── Auth split layout ── */
+.auth-root {
+  display: flex;
+  min-height: 100vh;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+/* ── Left slide panel ── */
+.auth-slide-panel {
+  flex: 0 0 45%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 2.5rem;
+  overflow: hidden;
+  transition: opacity 0.35s ease;
+}
+.slide-visible { opacity: 1; }
+.slide-hidden  { opacity: 0; }
+
+/* ── Ghibli-style illustrated scenes ── */
+
+/* Scene 1: Spring hills — blue sky, rolling green hills, wildflowers */
+.scene-spring {
+  background:
+    /* wildflower dots */
+    radial-gradient(circle 4px at 12% 87%, rgba(255,210,80,0.9) 0%, transparent 60%),
+    radial-gradient(circle 3px at 20% 91%, rgba(255,140,140,0.8) 0%, transparent 60%),
+    radial-gradient(circle 4px at 32% 89%, rgba(255,220,80,0.9) 0%, transparent 60%),
+    radial-gradient(circle 3px at 55% 92%, rgba(200,240,180,0.7) 0%, transparent 60%),
+    radial-gradient(circle 4px at 72% 88%, rgba(255,180,90,0.8) 0%, transparent 60%),
+    radial-gradient(circle 3px at 88% 91%, rgba(255,200,120,0.8) 0%, transparent 60%),
+    /* near hills */
+    radial-gradient(ellipse 90% 65% at 20% 120%, #2d6a3f 0%, #1e4d2c 40%, transparent 58%),
+    radial-gradient(ellipse 75% 60% at 85% 120%, #33724a 0%, transparent 52%),
+    /* mid hills */
+    radial-gradient(ellipse 110% 55% at 50% 115%, #4a8a5a 0%, #3a7a48 35%, transparent 52%),
+    /* far hills */
+    radial-gradient(ellipse 130% 40% at 50% 105%, #6aaf7a 0%, #5a9f68 30%, transparent 48%),
+    /* fluffy clouds */
+    radial-gradient(ellipse 150px 50px at 18% 20%, rgba(255,255,255,0.82) 0%, transparent 65%),
+    radial-gradient(ellipse 100px 35px at 22% 27%, rgba(255,255,255,0.5) 0%, transparent 65%),
+    radial-gradient(ellipse 100px 35px at 58% 14%, rgba(255,255,255,0.75) 0%, transparent 65%),
+    radial-gradient(ellipse 65px 25px at 64% 21%, rgba(255,255,255,0.5) 0%, transparent 65%),
+    radial-gradient(ellipse 70px 28px at 82% 22%, rgba(255,255,255,0.6) 0%, transparent 65%),
+    /* sky */
+    linear-gradient(180deg, #3a9fd4 0%, #62bbea 28%, #92d4f4 52%, #b5e8f8 72%, #d2f2fc 88%, #e8f8fe 100%);
+}
+
+/* Scene 2: Sunset — warm orange/pink sky, hill silhouettes */
+.scene-sunset {
+  background:
+    /* hill silhouettes */
+    radial-gradient(ellipse 100% 60% at 25% 120%, #0d1a0d 0%, #1a2e1a 30%, transparent 52%),
+    radial-gradient(ellipse 80% 55% at 78% 120%, #111f11 0%, transparent 48%),
+    radial-gradient(ellipse 120% 50% at 52% 115%, #162416 0%, transparent 44%),
+    /* tree shapes */
+    radial-gradient(ellipse 18px 50px at 15% 80%, #0a180a 0%, transparent 70%),
+    radial-gradient(ellipse 22px 60px at 85% 78%, #0d1d0d 0%, transparent 70%),
+    radial-gradient(ellipse 15px 45px at 90% 82%, #0a180a 0%, transparent 70%),
+    /* sun glow on horizon */
+    radial-gradient(ellipse 140px 70px at 55% 70%, rgba(255,180,40,0.5) 0%, transparent 65%),
+    /* sky gradient — sunset */
+    linear-gradient(180deg,
+      #1a0a2e 0%,
+      #3a1258 12%,
+      #7a2260 25%,
+      #c44050 40%,
+      #e86038 55%,
+      #f59448 68%,
+      #fac870 80%,
+      #fde8a8 90%,
+      #fff5d0 100%);
+}
+
+/* Scene 3: Night — starry sky, moonlit hills */
+.scene-night {
+  background:
+    /* stars — many small dots */
+    radial-gradient(circle 1.5px at  8% 12%, rgba(255,255,255,0.95) 0%, transparent 60%),
+    radial-gradient(circle 1px  at 16% 6%,  rgba(255,255,255,0.8)  0%, transparent 60%),
+    radial-gradient(circle 2px  at 28% 9%,  rgba(255,255,255,0.9)  0%, transparent 60%),
+    radial-gradient(circle 1px  at 38% 5%,  rgba(255,255,255,0.7)  0%, transparent 60%),
+    radial-gradient(circle 1.5px at 48% 13%, rgba(255,255,255,0.85) 0%, transparent 60%),
+    radial-gradient(circle 1px  at 58% 7%,  rgba(255,255,255,0.75) 0%, transparent 60%),
+    radial-gradient(circle 2px  at 68% 10%, rgba(255,255,255,0.9)  0%, transparent 60%),
+    radial-gradient(circle 1px  at 78% 5%,  rgba(255,255,255,0.7)  0%, transparent 60%),
+    radial-gradient(circle 1.5px at 88% 14%, rgba(255,255,255,0.85) 0%, transparent 60%),
+    radial-gradient(circle 1px  at 95% 8%,  rgba(255,255,255,0.75) 0%, transparent 60%),
+    radial-gradient(circle 1px  at 5%  22%, rgba(255,255,255,0.6)  0%, transparent 60%),
+    radial-gradient(circle 1.5px at 22% 26%, rgba(255,255,255,0.8) 0%, transparent 60%),
+    radial-gradient(circle 1px  at 42% 20%, rgba(255,255,255,0.65) 0%, transparent 60%),
+    radial-gradient(circle 2px  at 62% 28%, rgba(255,255,255,0.85) 0%, transparent 60%),
+    radial-gradient(circle 1px  at 82% 22%, rgba(255,255,255,0.7)  0%, transparent 60%),
+    /* moon glow */
+    radial-gradient(circle 35px at 78% 18%, rgba(255,245,200,1)   0%, rgba(255,245,200,0.4) 50%, transparent 70%),
+    radial-gradient(circle 70px at 78% 18%, rgba(255,240,180,0.25) 0%, transparent 70%),
+    /* hill silhouettes */
+    radial-gradient(ellipse 120% 55% at 40% 120%, #050c08 0%, transparent 48%),
+    radial-gradient(ellipse 90% 50%  at 85% 120%, #070e0a 0%, transparent 44%),
+    /* sky */
+    linear-gradient(180deg, #010408 0%, #040c18 20%, #071428 40%, #0a1c38 60%, #0e2448 80%, #122a54 100%);
+}
+
+/* Scene 4: Forest — deep green, dappled light rays */
+.scene-forest {
+  background:
+    /* light shafts */
+    linear-gradient(168deg, rgba(255,255,210,0.18) 0%, transparent 38%),
+    linear-gradient(174deg, rgba(255,255,200,0.12) 5%, transparent 32%),
+    linear-gradient(162deg, rgba(255,255,220,0.10) 10%, transparent 28%),
+    /* tree trunk suggestion — vertical stripes */
+    repeating-linear-gradient(90deg,
+      transparent 0px, transparent 38px,
+      rgba(0,0,0,0.10) 38px, rgba(0,0,0,0.10) 42px),
+    /* canopy at top */
+    radial-gradient(ellipse 110% 35% at 50%  0%, #0e3a14 0%, #1a5020 60%, transparent 100%),
+    radial-gradient(ellipse 60%  20% at 20% -5%, #0a2a0e 0%, transparent 70%),
+    radial-gradient(ellipse 55%  18% at 80% -5%, #0c300f 0%, transparent 70%),
+    /* mossy floor */
+    radial-gradient(ellipse 110% 30% at 50% 110%, #0a1f0c 0%, #122816 50%, transparent 70%),
+    /* background depth */
+    linear-gradient(180deg, #061208 0%, #0e2610 20%, #1a4020 42%, #245828 60%, #1e5022 80%, #162e18 100%);
+}
+
+/* decorative blurred circles */
+.slide-circle {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.12;
+  pointer-events: none;
+}
+.slide-circle-1 {
+  width: 320px; height: 320px;
+  background: #fff;
+  top: -80px; right: -80px;
+}
+.slide-circle-2 {
+  width: 200px; height: 200px;
+  background: #4a90e2;
+  bottom: 120px; left: -60px;
+}
+.slide-circle-3 {
+  width: 140px; height: 140px;
+  background: #fff;
+  bottom: 60px; right: 80px;
+}
+
+/* brand mark */
+.slide-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  position: relative;
+  z-index: 1;
+}
+.slide-brand-icon {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  width: 40px; height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+}
+.slide-brand-name {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.01em;
+}
+
+/* quote */
+.slide-quote-wrap {
+  position: relative;
+  z-index: 1;
+  padding: 2rem 0;
+}
+.slide-quote {
+  font-size: 1.35rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.92);
+  line-height: 1.55;
+  font-style: italic;
+  margin: 0 0 0.75rem;
+}
+.slide-author {
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.5);
+  font-style: normal;
+  letter-spacing: 0.04em;
+}
+
+/* dots */
+.slide-dots {
+  display: flex;
+  gap: 0.45rem;
+  position: relative;
+  z-index: 1;
+}
+.slide-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+  padding: 0;
+}
+.slide-dot:hover { background: rgba(255, 255, 255, 0.6); }
+.slide-dot-active {
+  background: #fff;
+  transform: scale(1.25);
+}
+
+/* ── Right form panel ── */
+.auth-form-panel {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f9fafb;
+  padding: 2rem 1.5rem;
+}
+
+.auth-form-inner {
+  width: 100%;
+  max-width: 400px;
+}
+
+/* Tab toggle */
+.auth-tabs {
+  display: flex;
+  background: #e5e7eb;
+  border-radius: 10px;
+  padding: 4px;
+  margin-bottom: 1.75rem;
+  gap: 4px;
+}
+.auth-tab {
+  flex: 1;
+  padding: 0.55rem 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 7px;
+  background: transparent;
+  color: #6b7280;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s, box-shadow 0.18s;
+}
+.auth-tab:hover { color: #374151; }
+.auth-tab-active {
+  background: #fff;
+  color: #1f2937;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+
+/* Headings */
+.auth-heading {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #111827;
+  margin: 0 0 0.25rem;
+}
+.auth-sub {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin: 0 0 1.5rem;
+}
+
+/* Error */
+.auth-error {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  color: #dc2626;
+  font-size: 0.84rem;
+  margin-bottom: 1.2rem;
+}
+
+/* Form fields */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.auth-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.auth-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #374151;
+}
+.auth-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.auth-icon {
+  position: absolute;
+  left: 0.75rem;
+  color: #9ca3af;
+  pointer-events: none;
+  flex-shrink: 0;
+}
+.auth-input {
+  width: 100%;
+  padding: 0.72rem 0.9rem 0.72rem 2.4rem;
+  border: 1.5px solid #d1d5db;
+  border-radius: 9px;
+  font-size: 0.875rem;
+  color: #111827;
+  background: #fff;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  box-sizing: border-box;
+}
+.auth-input:focus {
+  border-color: #4a90e2;
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.12);
+}
+.auth-input-pr { padding-right: 2.8rem; }
+.auth-eye {
+  position: absolute;
+  right: 0.75rem;
+  background: none;
+  border: none;
+  color: #9ca3af;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 0;
+  transition: color 0.15s;
+}
+.auth-eye:hover { color: #4b5563; }
+
+/* Submit */
+.auth-submit {
+  margin-top: 0.5rem;
+  width: 100%;
+  padding: 0.78rem;
+  background: linear-gradient(135deg, #4a90e2, #2e5aa8);
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 9px;
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.1s;
+  letter-spacing: 0.01em;
+}
+.auth-submit:hover { opacity: 0.9; transform: translateY(-1px); }
+.auth-submit:active { transform: translateY(0); }
+.auth-submit:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
+
+/* Switch link */
+.auth-switch {
+  text-align: center;
+  font-size: 0.82rem;
+  color: #6b7280;
+  margin: 1.2rem 0 0;
+}
+.auth-switch-link {
+  background: none;
+  border: none;
+  color: #2e5aa8;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  font-size: inherit;
+  text-decoration: underline;
+  transition: color 0.15s;
+}
+.auth-switch-link:hover { color: #1e3f7f; }
+
+/* Back link */
+.auth-back {
+  text-align: center;
+  margin-top: 1.5rem;
+  font-size: 0.8rem;
+}
+.auth-back a {
+  color: #9ca3af;
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.auth-back a:hover { color: #4b5563; }
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .auth-root { flex-direction: column; }
+  .auth-slide-panel {
+    flex: 0 0 auto;
+    min-height: 220px;
+    padding: 1.75rem;
+  }
+  .slide-quote { font-size: 1rem; }
+  .auth-form-panel { padding: 2rem 1.25rem; }
+}

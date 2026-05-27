@@ -1,0 +1,148 @@
+/* ── Ghibli Footer ── */
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Playfair+Display:wght@700&display=swap');
+
+.ft-root {
+  background: #1a1205;
+  color: rgba(232, 226, 213, 0.65);
+  padding: 3rem 0 0;
+  font-family: 'Lora', Georgia, serif;
+  font-size: 0.875rem;
+}
+
+.ft-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 2rem 2.5rem;
+  display: grid;
+  grid-template-columns: 1.6fr 1fr 1fr;
+  gap: 2.5rem;
+}
+
+/* Brand column */
+.ft-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.ft-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  text-decoration: none;
+  width: fit-content;
+}
+.ft-logo-icon {
+  background: linear-gradient(135deg, #6aab55, #3d6632);
+  border-radius: 8px;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.ft-logo-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #e8e2d5;
+  letter-spacing: 0.01em;
+}
+
+.ft-tagline {
+  color: rgba(232, 226, 213, 0.4);
+  line-height: 1.7;
+  font-size: 0.82rem;
+  margin: 0;
+  max-width: 300px;
+  font-style: italic;
+}
+
+.ft-contact {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  margin-top: 0.25rem;
+}
+.ft-contact-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: rgba(232, 226, 213, 0.45);
+  text-decoration: none;
+  font-size: 0.8rem;
+  transition: color 0.15s;
+}
+.ft-contact-link:hover {
+  color: #c9a84c;
+}
+
+/* Link columns */
+.ft-links-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.ft-col-title {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(201, 168, 76, 0.5);
+  margin: 0 0 0.35rem;
+}
+
+.ft-links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.ft-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: rgba(232, 226, 213, 0.5);
+  text-decoration: none;
+  font-size: 0.84rem;
+  font-weight: 400;
+  transition: color 0.15s;
+  padding: 0.2rem 0;
+}
+.ft-link:hover {
+  color: #c9a84c;
+}
+
+/* Bottom bar */
+.ft-bottom {
+  border-top: 1px solid rgba(201, 168, 76, 0.12);
+  padding: 1.1rem 2rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.ft-copy {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.78rem;
+  color: rgba(232, 226, 213, 0.28);
+  margin: 0;
+}
+.ft-heart {
+  color: #e87397;
+  flex-shrink: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .ft-inner { grid-template-columns: 1fr 1fr; gap: 2rem; }
+  .ft-brand { grid-column: 1 / -1; }
+}
+@media (max-width: 480px) {
+  .ft-inner { grid-template-columns: 1fr; }
+}

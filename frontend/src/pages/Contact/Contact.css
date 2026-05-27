@@ -1,0 +1,86 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap');
+
+.contact-root { background: #f5f0e8; min-height: 100vh; display: flex; flex-direction: column; }
+
+/* ── Hero banner ── */
+.contact-hero {
+  background:
+    radial-gradient(ellipse 220px 90px at 12% 22%, #fff 0%, transparent 70%),
+    radial-gradient(ellipse 160px 60px at 75% 18%, #fffdf9 0%, transparent 70%),
+    radial-gradient(ellipse 80% 26% at 50% 76%, #8cbd7e 0%, transparent 55%),
+    radial-gradient(ellipse 50% 32% at 8%  86%, #4e9140 0%, transparent 55%),
+    radial-gradient(ellipse 50% 32% at 92% 86%, #4e9140 0%, transparent 55%),
+    linear-gradient(180deg, #82c8e8 0%, #aad8f0 30%, #cceaf9 55%, #e5f8fe 72%, #f5f0e8 100%);
+  padding: 64px 24px 80px;
+  text-align: center;
+}
+.contact-hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 700; color: #1a3a12;
+  text-shadow: 0 2px 16px rgba(255,255,255,0.5); margin-bottom: 12px;
+}
+.contact-hero-sub {
+  font-family: 'Lora', serif; font-size: 1.05rem; color: #2a4a20; max-width: 440px; margin: 0 auto; line-height: 1.75;
+}
+
+/* ── Body ── */
+.contact-body { padding: 64px 24px 80px; max-width: 880px; margin: 0 auto; width: 100%; }
+
+/* info cards row */
+.contact-info-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-bottom: 44px; }
+@media (max-width: 640px) { .contact-info-row { grid-template-columns: 1fr; } }
+
+.contact-info-card {
+  background: #fdfcf8; border: 1.5px solid #d4c5a9; border-radius: 18px;
+  padding: 26px 20px; display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.contact-info-card:hover { transform: translateY(-4px); box-shadow: 0 10px 28px rgba(42,31,21,0.1); border-color: #c9a84c; }
+.contact-info-icon {
+  width: 52px; height: 52px; border-radius: 50%; background: #e8f5e2; border: 1.5px solid #c8e0c0;
+  display: flex; align-items: center; justify-content: center; color: #4e7e40;
+}
+.contact-info-label { font-family: 'Lora', serif; font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #c9a84c; }
+.contact-info-value { font-family: 'Lora', serif; font-size: 0.9rem; color: #5a4a35; }
+
+/* form card */
+.contact-form-card {
+  background: #fdfcf8; border: 1.5px solid #d4c5a9; border-radius: 24px; padding: 40px 44px;
+}
+@media (max-width: 600px) { .contact-form-card { padding: 28px 22px; } }
+
+.contact-form-label {
+  display: block; font-family: 'Lora', serif; font-size: 13px; font-weight: 600; color: #5a4a35; margin-bottom: 7px;
+}
+.contact-form-input,
+.contact-form-textarea {
+  width: 100%; font-family: 'Lora', serif; font-size: 0.9rem; color: #2a1f15;
+  background: #f5f0e8; border: 1.5px solid #d4c5a9; border-radius: 12px;
+  padding: 11px 16px; outline: none; transition: border-color 0.2s, box-shadow 0.2s; box-sizing: border-box;
+}
+.contact-form-input:focus,
+.contact-form-textarea:focus { border-color: #4e7e40; box-shadow: 0 0 0 3px rgba(78,126,64,0.12); }
+.contact-form-textarea { resize: vertical; min-height: 140px; }
+
+.contact-form-row { margin-bottom: 22px; }
+
+.contact-submit-btn {
+  width: 100%; padding: 14px; border: none; border-radius: 100px;
+  background: #4e7e40; color: #fff; cursor: pointer;
+  font-family: 'Lora', serif; font-size: 15px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  transition: background 0.2s, transform 0.2s, box-shadow 0.2s; margin-top: 4px;
+}
+.contact-submit-btn:hover { background: #3d6632; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(78,126,64,0.35); }
+
+.contact-success {
+  margin-top: 20px; padding: 16px 20px; background: #e8f5e2;
+  border: 1.5px solid #c8e0c0; border-radius: 14px;
+  font-family: 'Lora', serif; font-size: 0.92rem; color: #3d6632;
+  display: flex; align-items: center; gap: 10px;
+}
+
+.contact-form-title {
+  font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; color: #2a1f15; margin-bottom: 6px;
+}
+.contact-form-sub { font-family: 'Lora', serif; font-size: 0.88rem; color: #7a6a50; margin-bottom: 28px; }

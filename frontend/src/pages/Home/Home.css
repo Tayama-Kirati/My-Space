@@ -1,0 +1,481 @@
+/* ── Ghibli Home Page ───────────────────────────────────────────────────── */
+
+/* ── Fonts ── */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Lora:ital,wght@0,400;0,500;1,400&display=swap');
+
+/* ── Page shell ── */
+.home-root {
+  background: #f5f0e8;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   HERO — Ghibli illustrated landscape
+═══════════════════════════════════════════════════════════════════════════ */
+.home-hero {
+  position: relative;
+  overflow: hidden;
+  min-height: 520px;
+  display: flex;
+  align-items: flex-end;
+  padding-bottom: 0;
+
+  /* Layered CSS illustration — sky → clouds → distant hills → meadow → flowers */
+  background:
+    /* ── Wildflowers ── */
+    radial-gradient(circle 4px at 4%   90%, #e87397 0%, transparent 100%),
+    radial-gradient(circle 3px at 8%   94%, #f5c842 0%, transparent 100%),
+    radial-gradient(circle 4px at 14%  88%, #a3d977 0%, transparent 100%),
+    radial-gradient(circle 3px at 19%  93%, #e87397 0%, transparent 100%),
+    radial-gradient(circle 5px at 23%  91%, #fff    0%, transparent 100%),
+    radial-gradient(circle 3px at 29%  94%, #f5c842 0%, transparent 100%),
+    radial-gradient(circle 4px at 33%  89%, #c89ff5 0%, transparent 100%),
+    radial-gradient(circle 3px at 38%  93%, #e87397 0%, transparent 100%),
+    radial-gradient(circle 5px at 44%  90%, #fff    0%, transparent 100%),
+    radial-gradient(circle 3px at 50%  94%, #a3d977 0%, transparent 100%),
+    radial-gradient(circle 4px at 55%  88%, #f5c842 0%, transparent 100%),
+    radial-gradient(circle 3px at 60%  92%, #e87397 0%, transparent 100%),
+    radial-gradient(circle 5px at 65%  90%, #fff    0%, transparent 100%),
+    radial-gradient(circle 3px at 70%  93%, #c89ff5 0%, transparent 100%),
+    radial-gradient(circle 4px at 75%  89%, #f5c842 0%, transparent 100%),
+    radial-gradient(circle 3px at 80%  94%, #a3d977 0%, transparent 100%),
+    radial-gradient(circle 5px at 85%  91%, #e87397 0%, transparent 100%),
+    radial-gradient(circle 3px at 90%  93%, #fff    0%, transparent 100%),
+    radial-gradient(circle 4px at 95%  88%, #f5c842 0%, transparent 100%),
+    /* ── Foreground meadow strip ── */
+    linear-gradient(180deg, #52a044 0%, #3d7a30 100%) 0 100% / 100% 14% no-repeat,
+    /* ── Foreground hill right ── */
+    radial-gradient(ellipse 55% 35% at 88% 86%, #4e9140 0%, transparent 55%),
+    /* ── Foreground hill left ── */
+    radial-gradient(ellipse 55% 35% at 14% 86%, #4e9140 0%, transparent 55%),
+    /* ── Midground hills ── */
+    radial-gradient(ellipse 70% 28% at 70% 78%, #6aab55 0%, transparent 60%),
+    radial-gradient(ellipse 65% 28% at 30% 80%, #5a9c5a 0%, transparent 60%),
+    /* ── Distant hills ── */
+    radial-gradient(ellipse 90% 22% at 50% 74%, #8cbd7e 0%, transparent 55%),
+    /* ── Tree silhouettes right ── */
+    radial-gradient(ellipse 28px 90px at 96% 72%, #2d5e20 0%, transparent 80%),
+    radial-gradient(ellipse 22px 70px at 91% 75%, #2d5e20 0%, transparent 80%),
+    /* ── Tree silhouettes left ── */
+    radial-gradient(ellipse 28px 90px at 4%  72%, #2d5e20 0%, transparent 80%),
+    radial-gradient(ellipse 22px 70px at 9%  75%, #2d5e20 0%, transparent 80%),
+    /* ── Cloud 4 small ── */
+    radial-gradient(ellipse 80px  36px at 88% 32%, #fffefb 0%, transparent 75%),
+    /* ── Cloud 3 ── */
+    radial-gradient(ellipse 150px 55px at 72% 20%, #ffffff 0%, transparent 70%),
+    /* ── Cloud 2 ── */
+    radial-gradient(ellipse 210px 80px at 38% 15%, #fffdf9 0%, transparent 70%),
+    /* ── Cloud 1 large ── */
+    radial-gradient(ellipse 240px 90px at 12% 22%, #ffffff 0%, transparent 70%),
+    /* ── Sky ── */
+    linear-gradient(180deg,
+      #7ec4e8 0%,
+      #a8d8f0 25%,
+      #c4eaf9 50%,
+      #dff3fd 70%,
+      #eef9fe 85%,
+      #f5f0e8 100%
+    );
+  background-size:
+    /* wildflowers */ 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%,
+                      100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%,
+                      100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%,
+                      100% 100%, 100% 100%, 100% 100%, 100% 100%,
+    /* meadow */ 100% 14%,
+    /* hills + trees + clouds + sky */ auto;
+}
+
+.home-hero-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 100px 24px 80px;
+}
+
+.home-hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255,255,255,0.7);
+  backdrop-filter: blur(8px);
+  border: 1.5px solid rgba(78,126,64,0.25);
+  border-radius: 100px;
+  padding: 6px 18px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #4e7e40;
+  letter-spacing: 0.04em;
+  margin-bottom: 28px;
+  font-family: 'Lora', serif;
+}
+
+.home-hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.6rem, 7vw, 5rem);
+  font-weight: 700;
+  color: #1a3a12;
+  line-height: 1.15;
+  margin-bottom: 10px;
+  text-shadow: 0 2px 20px rgba(255,255,255,0.6);
+}
+
+.home-hero-title em {
+  font-style: italic;
+  color: #4e7e40;
+}
+
+.home-hero-sub {
+  font-family: 'Lora', serif;
+  font-size: clamp(1rem, 2.2vw, 1.2rem);
+  color: #2a4a20;
+  max-width: 560px;
+  line-height: 1.75;
+  margin-bottom: 36px;
+  opacity: 0.85;
+}
+
+.home-hero-btns {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.home-btn-primary {
+  background: #4e7e40;
+  color: #fff;
+  border: none;
+  border-radius: 100px;
+  padding: 13px 32px;
+  font-family: 'Lora', serif;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 20px rgba(78,126,64,0.35);
+  transition: all 0.25s;
+}
+.home-btn-primary:hover {
+  background: #3d6632;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(78,126,64,0.45);
+}
+
+.home-btn-ghost {
+  background: rgba(255,255,255,0.65);
+  color: #2a4a20;
+  border: 1.5px solid rgba(78,126,64,0.4);
+  border-radius: 100px;
+  padding: 12px 28px;
+  font-family: 'Lora', serif;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  backdrop-filter: blur(6px);
+  transition: all 0.25s;
+}
+.home-btn-ghost:hover {
+  background: rgba(255,255,255,0.85);
+  transform: translateY(-2px);
+}
+
+/* ── Grass wave divider ── */
+.home-grass-divider {
+  width: 100%;
+  overflow: hidden;
+  line-height: 0;
+  background: #f5f0e8;
+  margin-top: -2px;
+}
+.home-grass-divider svg {
+  display: block;
+  width: 100%;
+  height: 48px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SECTION — Feature Cards
+═══════════════════════════════════════════════════════════════════════════ */
+.home-features {
+  background: #f5f0e8;
+  padding: 72px 24px 80px;
+}
+
+.home-section-label {
+  font-family: 'Lora', serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #c9a84c;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.home-section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+  font-weight: 700;
+  color: #2a1f15;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.home-section-desc {
+  font-family: 'Lora', serif;
+  font-size: 1rem;
+  color: #7a6a50;
+  text-align: center;
+  max-width: 480px;
+  margin: 0 auto 52px;
+  line-height: 1.7;
+}
+
+.home-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 22px;
+  max-width: 1060px;
+  margin: 0 auto;
+}
+
+.home-card {
+  background: #fdfcf8;
+  border: 1.5px solid #d4c5a9;
+  border-radius: 20px;
+  padding: 28px 28px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+  overflow: hidden;
+}
+.home-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.home-card:hover {
+  transform: translateY(-6px) rotate(0.4deg);
+  box-shadow: 0 16px 40px rgba(42,31,21,0.13);
+  border-color: #c9a84c;
+}
+.home-card:hover::before { opacity: 1; }
+
+.home-card-icon-wrap {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  flex-shrink: 0;
+  transition: transform 0.3s;
+}
+.home-card:hover .home-card-icon-wrap {
+  transform: scale(1.12) rotate(-4deg);
+}
+
+.home-card-icon-wrap.journal  { background: #e8f5e2; }
+.home-card-icon-wrap.pomodoro { background: #fdf0e2; }
+.home-card-icon-wrap.books    { background: #fef5e2; }
+.home-card-icon-wrap.memories { background: #fde8f0; }
+.home-card-icon-wrap.movies   { background: #e2f0f8; }
+
+.home-card-tag {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #a89070;
+}
+
+.home-card-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.18rem;
+  font-weight: 700;
+  color: #2a1f15;
+  margin: 0;
+}
+
+.home-card-desc {
+  font-family: 'Lora', serif;
+  font-size: 0.88rem;
+  color: #7a6a50;
+  line-height: 1.7;
+  flex: 1;
+}
+
+.home-card-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #4e7e40;
+  font-family: 'Lora', serif;
+  margin-top: 4px;
+  transition: gap 0.2s;
+}
+.home-card:hover .home-card-cta { gap: 8px; }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SECTION — Quote strip
+═══════════════════════════════════════════════════════════════════════════ */
+.home-quote-strip {
+  background:
+    radial-gradient(ellipse 300px 140px at 10% 50%, rgba(78,126,64,0.18) 0%, transparent 70%),
+    radial-gradient(ellipse 300px 140px at 90% 50%, rgba(201,168,76,0.15) 0%, transparent 70%),
+    linear-gradient(135deg, #2a1f15 0%, #3d2d1e 50%, #2a1f15 100%);
+  padding: 72px 24px;
+  text-align: center;
+}
+
+.home-quote-leaf {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  display: block;
+  opacity: 0.7;
+}
+
+.home-quote-text {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.15rem, 2.8vw, 1.7rem);
+  font-style: italic;
+  color: #f5f0e8;
+  line-height: 1.75;
+  max-width: 680px;
+  margin: 0 auto 18px;
+}
+
+.home-quote-author {
+  font-family: 'Lora', serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: #c9a84c;
+  text-transform: uppercase;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SECTION — Quick nav (charm tags)
+═══════════════════════════════════════════════════════════════════════════ */
+.home-quicknav {
+  background: #ede8de;
+  padding: 64px 24px 72px;
+  border-top: 1.5px solid #d4c5a9;
+}
+
+.home-charm-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  justify-content: center;
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.home-charm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+}
+.home-charm:hover { transform: translateY(-6px) scale(1.06); }
+
+.home-charm-bead {
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  border: 2px solid #d4c5a9;
+  box-shadow: 0 4px 14px rgba(42,31,21,0.10);
+  transition: box-shadow 0.3s, border-color 0.3s;
+  position: relative;
+}
+.home-charm:hover .home-charm-bead {
+  box-shadow: 0 8px 24px rgba(42,31,21,0.18);
+  border-color: #c9a84c;
+}
+
+/* thread above bead */
+.home-charm-bead::before {
+  content: '';
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1.5px;
+  height: 12px;
+  background: #a89070;
+  border-radius: 2px;
+}
+
+.home-charm-bead.journal   { background: #e8f5e2; }
+.home-charm-bead.pomodoro  { background: #fdf0e2; }
+.home-charm-bead.books     { background: #fef5e2; }
+.home-charm-bead.memories  { background: #fde8f0; }
+.home-charm-bead.movies    { background: #e2f0f8; }
+
+/* tag below bead */
+.home-charm-tag {
+  background: #fdfcf8;
+  border: 1px solid #d4c5a9;
+  border-radius: 6px;
+  padding: 5px 12px;
+  font-family: 'Lora', serif;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #5a4a35;
+  text-align: center;
+  position: relative;
+  min-width: 72px;
+  box-shadow: 0 2px 6px rgba(42,31,21,0.07);
+}
+/* thread from bead to tag */
+.home-charm-tag::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1.5px;
+  height: 8px;
+  background: #a89070;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Responsive
+═══════════════════════════════════════════════════════════════════════════ */
+@media (max-width: 640px) {
+  .home-hero { min-height: 400px; }
+  .home-hero-content { padding: 80px 20px 60px; }
+  .home-cards-grid { grid-template-columns: 1fr; }
+  .home-charm-grid { gap: 14px; }
+  .home-charm-bead { width: 54px; height: 54px; font-size: 24px; }
+}
