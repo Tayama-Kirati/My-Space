@@ -9,6 +9,7 @@ import Contact from "./pages/Contact/Contact";
 import Login from "./pages/Login/Login";
 import Journal from "./pages/Journal/Journal";
 import JournalEntry from "./pages/Journal/JournalEntry";
+import JournalMemories from "./pages/Journal/JournalMemories";
 import Pomodoro from "./pages/Pomodoro/Pomodoro";
 import Books from "./pages/Books/Books";
 import Movies from "./pages/Movies/Movies";
@@ -62,22 +63,8 @@ function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Login defaultTab="signup" />} />
-          <Route
-            path="/"
-            element={
-              <ProtectedRoute>
-                <Home />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/about"
-            element={
-              <ProtectedRoute>
-                <About />
-              </ProtectedRoute>
-            }
-          />
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
           <Route
             path="/contact"
             element={
@@ -91,6 +78,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <Journal />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/journal/memories"
+            element={
+              <ProtectedRoute>
+                <JournalMemories />
               </ProtectedRoute>
             }
           />

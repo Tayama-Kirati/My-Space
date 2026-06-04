@@ -51,6 +51,69 @@
   color: #2a1f15;
 }
 
+/* ── Account hover dropdown ── */
+.nb-account-wrap {
+  position: relative;
+}
+.nb-account-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.9rem;
+  border-radius: 8px;
+  border: 1.5px solid #d4c5a9;
+  background: transparent;
+  color: #5a4a35;
+  font-size: 0.84rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+.nb-account-btn:hover {
+  background: #ede8de;
+  border-color: #a89070;
+}
+.nb-dropdown {
+  display: none;
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  min-width: 160px;
+  background: #fdfcf8;
+  border: 1.5px solid #d4c5a9;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.10);
+  overflow: hidden;
+  z-index: 300;
+  flex-direction: column;
+}
+.nb-account-wrap:hover .nb-dropdown {
+  display: flex;
+}
+.nb-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1rem;
+  font-size: 0.84rem;
+  font-weight: 500;
+  color: #5a4a35;
+  text-decoration: none;
+  background: transparent;
+  border: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.12s;
+}
+.nb-dropdown-item:hover {
+  background: #ede8de;
+  color: #2a1f15;
+}
+.nb-dropdown-item + .nb-dropdown-item {
+  border-top: 1px solid #ede8de;
+}
+
 /* ── Sidebar drawer ── */
 .sidebar-overlay {
   position: fixed;

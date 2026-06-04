@@ -15,8 +15,11 @@ import {
   Bookmark,
   Trash2,
   CheckCheck,
+  Sparkles,
+  Loader2,
 } from "lucide-react";
 import { readJSON, writeJSON } from "../../utils/authPersistence";
+import api from "../../services/api";
 import "./Movies.css";
 
 const COVER_PALETTES = [
@@ -48,131 +51,6 @@ const GENRES = [
   "Other",
 ];
 
-const MY_MOVIES = [
-  {
-    id: 1,
-    title: "Spirited Away",
-    director: "Hayao Miyazaki",
-    year: 2001,
-    duration: "2h 5m",
-    language: "Japanese",
-    genre: "Animation",
-    description:
-      "Ten-year-old Chihiro stumbles into a spirit world ruled by the witch Yubaba. To rescue her parents and return home, she must work in a magical bathhouse.",
-    review:
-      "Absolutely perfect. Every single frame is a painting. The world-building is so rich and imaginative — it feels genuinely alive. My favourite film of all time.",
-    rating: 5,
-    dateWatched: "2026-04-18",
-    palette: "mc-ocean",
-    featured: true,
-    image: null,
-  },
-  {
-    id: 2,
-    title: "My Neighbor Totoro",
-    director: "Hayao Miyazaki",
-    year: 1988,
-    duration: "1h 26m",
-    language: "Japanese",
-    genre: "Animation",
-    description:
-      "Two young girls move to the countryside and discover the forest is home to magical creatures, including the giant, gentle spirit Totoro.",
-    review:
-      "Pure joy. There is no villain, no conflict — just wonder and warmth. This film feels like a hug.",
-    rating: 5,
-    dateWatched: "2026-03-10",
-    palette: "mc-forest",
-    featured: false,
-    image: null,
-  },
-  {
-    id: 3,
-    title: "Howl's Moving Castle",
-    director: "Hayao Miyazaki",
-    year: 2004,
-    duration: "1h 59m",
-    language: "Japanese",
-    genre: "Fantasy",
-    description:
-      "Sophie, a young hat-maker, is cursed by a witch and turned into an old woman. She seeks refuge in the moving castle of the wizard Howl.",
-    review:
-      "The aesthetics alone are worth it — that walking castle is one of cinema's great images. A film about love, self-worth, and finding courage.",
-    rating: 5,
-    dateWatched: "2026-02-14",
-    palette: "mc-indigo",
-    featured: false,
-    image: null,
-  },
-  {
-    id: 4,
-    title: "Ponyo",
-    director: "Hayao Miyazaki",
-    year: 2008,
-    duration: "1h 41m",
-    language: "Japanese",
-    genre: "Animation",
-    description:
-      "A five-year-old boy develops a relationship with Ponyo, a young goldfish princess who longs to become human.",
-    review:
-      "Simpler than Spirited Away but no less beautiful. The flooding sequence is visually breathtaking.",
-    rating: 4,
-    dateWatched: "2026-01-22",
-    palette: "mc-rose",
-    featured: false,
-    image: null,
-  },
-  {
-    id: 5,
-    title: "Kiki's Delivery Service",
-    director: "Hayao Miyazaki",
-    year: 1989,
-    duration: "1h 43m",
-    language: "Japanese",
-    genre: "Animation",
-    description:
-      "A young witch named Kiki moves to a new town and starts a delivery service, learning what it means to grow up and find her path.",
-    review:
-      "A quiet coming-of-age story. Kiki losing her magic as she loses confidence hit unexpectedly hard.",
-    rating: 4,
-    dateWatched: "2025-12-28",
-    palette: "mc-amber",
-    featured: false,
-    image: null,
-  },
-];
-
-const MOVIE_WISHLIST_SEED = [
-  {
-    id: "mw1",
-    title: "Princess Mononoke",
-    director: "Hayao Miyazaki",
-    year: 1997,
-    genre: "Animation",
-    notes: "The Ghibli film I am most excited to see.",
-    palette: "mc-forest",
-    image: null,
-  },
-  {
-    id: "mw2",
-    title: "The Tale of Princess Kaguya",
-    director: "Isao Takahata",
-    year: 2013,
-    genre: "Animation",
-    notes: "The art style looks like a watercolour painting.",
-    palette: "mc-slate",
-    image: null,
-  },
-  {
-    id: "mw3",
-    title: "Castle in the Sky",
-    director: "Hayao Miyazaki",
-    year: 1986,
-    genre: "Animation",
-    notes: "Classic Ghibli adventure I have not gotten to yet.",
-    palette: "mc-amber",
-    image: null,
-  },
-];
 
 function sortByRating(arr) {
   return [...arr].sort(
@@ -190,10 +68,13 @@ function formatDate(iso) {
 function isNew(iso) {
   return (Date.now() - new Date(iso)) / 86400000 <= 21;
 }
+const LEGACY_SEED_IDS = new Set(["mw1", "mw2", "mw3"]);
+
 function loadWishlist() {
-  return (
-    readJSON("movies_wishlist", MOVIE_WISHLIST_SEED) || MOVIE_WISHLIST_SEED
-  );
+  const stored = readJSON("movies_wishlist", []) || [];
+  const cleaned = stored.filter((item) => !LEGACY_SEED_IDS.has(item.id));
+  if (cleaned.length !== stored.length) writeJSON("movies_wishlist", cleaned);
+  return cleaned;
 }
 function saveWishlist(list) {
   writeJSON("movies_wishlist", list);
@@ -670,11 +551,28 @@ function WishlistMovieModal({ onClose, onAdd }) {
 
 export default function Movies() {
   const [tab, setTab] = useState("watched");
-  const [movies, setMovies] = useState(() => sortByRating(MY_MOVIES));
+  const [movies, setMovies] = useState([]);
   const [wishlist, setWishlist] = useState(loadWishlist);
   const [showLogModal, setShowLogModal] = useState(false);
   const [showWishlistModal, setShowWishlistModal] = useState(false);
   const [markingAsWatched, setMarkingAsWatched] = useState(null);
+  const [aiSuggestions, setAiSuggestions] = useState(null);
+  const [aiLoading, setAiLoading] = useState(false);
+  const [showAiPanel, setShowAiPanel] = useState(false);
+
+  const fetchAiSuggestions = async () => {
+    setShowAiPanel(true);
+    setAiLoading(true);
+    setAiSuggestions(null);
+    try {
+      const { data } = await api.post("/ai/suggest", { type: "movies", items: movies });
+      setAiSuggestions(data.suggestions);
+    } catch {
+      setAiSuggestions([]);
+    } finally {
+      setAiLoading(false);
+    }
+  };
 
   const addMovie = (movie) =>
     setMovies((prev) => sortByRating([movie, ...prev]));
@@ -698,9 +596,9 @@ export default function Movies() {
   const featured = movies.find((m) => m.featured) || movies[0];
   const rest = movies.filter((m) => m.id !== featured?.id);
   const total = movies.length;
-  const avgRating = (
-    movies.reduce((s, m) => s + m.rating, 0) / movies.length
-  ).toFixed(1);
+  const avgRating = movies.length
+    ? (movies.reduce((s, m) => s + m.rating, 0) / movies.length).toFixed(1)
+    : "—";
   const perfect = movies.filter((m) => m.rating === 5).length;
 
   return (
@@ -754,6 +652,9 @@ export default function Movies() {
                 }}
               >
                 <Bookmark size={16} /> View Wishlist
+              </button>
+              <button className="mv-hero-cta-ghost" onClick={fetchAiSuggestions}>
+                <Sparkles size={16} /> AI Suggest
               </button>
             </div>
           </div>
@@ -878,10 +779,17 @@ export default function Movies() {
             {rest.length === 0 ? (
               <div className="mv-empty">
                 <div className="mv-empty-icon">
-                  <BookOpen />
+                  <Film />
                 </div>
-                <h3>No more films yet</h3>
-                <p>Log another movie you have watched.</p>
+                <h3>No films logged yet</h3>
+                <p>Start by logging the first movie you have watched.</p>
+                <button
+                  className="mv-hero-cta"
+                  style={{ marginTop: "1rem" }}
+                  onClick={() => setShowLogModal(true)}
+                >
+                  <PenLine size={15} /> Log a Movie
+                </button>
               </div>
             ) : (
               <div className="mv-grid">
@@ -1026,6 +934,62 @@ export default function Movies() {
                   </div>
                 </div>
               ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* ── AI Suggestions Panel ── */}
+      {showAiPanel && (
+        <div className="mv-section">
+          <div className="mv-section-hdr">
+            <div>
+              <p className="mv-section-eyebrow">Powered by Claude AI</p>
+              <h2 className="mv-section-title" style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                <Sparkles size={22} style={{ color: "#4e7e40" }} /> Films You Might Love
+              </h2>
+            </div>
+            <button
+              className="mv-add-btn"
+              onClick={fetchAiSuggestions}
+              disabled={aiLoading}
+            >
+              {aiLoading ? <Loader2 size={16} className="spin" /> : <Sparkles size={16} />}
+              {aiLoading ? "Thinking…" : "Refresh"}
+            </button>
+          </div>
+
+          {aiLoading ? (
+            <div className="mv-empty">
+              <Loader2 size={36} className="spin" style={{ color: "#4e7e40" }} />
+              <p style={{ marginTop: "1rem", color: "#7a6a50" }}>Claude is analysing your taste…</p>
+            </div>
+          ) : aiSuggestions && aiSuggestions.length > 0 ? (
+            <div className="mv-grid">
+              {aiSuggestions.map((s, i) => (
+                <article key={i} className="mv-card" style={{ border: "1.5px solid #d4c5a9" }}>
+                  <div className="mv-card-cover-wrap">
+                    <div className={`mv-card-poster ${COVER_PALETTES[i % COVER_PALETTES.length]}`}
+                      style={{ borderRadius: "8px 8px 0 0" }}>
+                      <Clapperboard size={28} className="mv-poster-icon" />
+                      <span className="mv-card-ptitle">{s.title}</span>
+                      <span className="mv-card-pdir">{s.director}</span>
+                    </div>
+                  </div>
+                  <div className="mv-card-body">
+                    <span className="mv-genre-tag">{s.genre}</span>
+                    <h3 className="mv-card-title" style={{ marginTop: "0.5rem" }}>{s.title}</h3>
+                    <div className="mv-card-dir"><Film size={11} /> Dir. {s.director}</div>
+                    <p className="mv-card-desc" style={{ marginTop: "0.5rem", fontStyle: "italic" }}>
+                      {s.reason}
+                    </p>
+                  </div>
+                </article>
+              ))}
+            </div>
+          ) : (
+            <div className="mv-empty">
+              <p>Could not load suggestions. Make sure the backend is running and your API key is set.</p>
             </div>
           )}
         </div>

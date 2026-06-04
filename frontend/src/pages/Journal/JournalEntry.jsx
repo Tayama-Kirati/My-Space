@@ -254,7 +254,8 @@ export default function JournalEntry() {
     if (!editor) return;
     clearTimeout(autoSaveTimer.current);
     doSave(editor.getHTML());
-  }, [editor, doSave]);
+    navigate("/journal");
+  }, [editor, doSave, navigate]);
 
   const handleDelete = () => {
     toast.confirm({

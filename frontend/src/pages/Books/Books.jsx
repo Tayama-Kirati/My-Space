@@ -12,8 +12,11 @@ import {
   Bookmark,
   Trash2,
   CheckCheck,
+  Sparkles,
+  Loader2,
 } from "lucide-react";
 import { readJSON, writeJSON } from "../../utils/authPersistence";
+import api from "../../services/api";
 import "./Books.css";
 
 const COVER_PALETTES = [
@@ -41,98 +44,6 @@ const GENRES = [
   "Other",
 ];
 
-const MY_BOOKS = [
-  {
-    id: 1,
-    title: "Karnali Blues",
-    author: "Buddhi Sagar",
-    genre: "Literary Fiction",
-    description:
-      "A deeply moving Nepali novel narrated by a son reflecting on his relationship with his father — a warm, flawed, resilient man — against the backdrop of the remote Karnali region of Nepal.",
-    review:
-      "One of the most beautiful books I have read. The father-son relationship feels so real and tender. Buddhi Sagar writes about ordinary life with extraordinary warmth. I felt nostalgic for a childhood that wasn't even mine.",
-    rating: 5,
-    dateAdded: "2026-04-10",
-    palette: "cover-forest",
-    featured: true,
-    image: null,
-  },
-  {
-    id: 2,
-    title: "A Little Life",
-    author: "Hanya Yanagihara",
-    genre: "Literary Fiction",
-    description:
-      "Spanning decades, this novel follows four friends from college into middle age — but centres on Jude St. Francis, a brilliant, secretive man carrying a past of unimaginable trauma.",
-    review:
-      "This book wrecked me. I have never cried this much reading anything. It is brutal and relentless but also the most profound portrait of friendship, love, and survival I have ever encountered.",
-    rating: 5,
-    dateAdded: "2026-03-02",
-    palette: "cover-indigo",
-    featured: false,
-    image: null,
-  },
-  {
-    id: 3,
-    title: "To Kill a Mockingbird",
-    author: "Harper Lee",
-    genre: "Historical Fiction",
-    description:
-      "Set in the American South during the 1930s, the story follows young Scout Finch as her father Atticus defends a Black man falsely accused of a crime.",
-    review:
-      "Atticus Finch is the kind of person I want to be. The moral clarity in this book is extraordinary. I read it in two days and stayed up thinking about justice and courage for a week after.",
-    rating: 5,
-    dateAdded: "2025-12-10",
-    palette: "cover-rose",
-    featured: false,
-    image: null,
-  },
-  {
-    id: 4,
-    title: "Sapiens",
-    author: "Yuval Noah Harari",
-    genre: "Non-Fiction",
-    description:
-      "A sweeping history of humankind — from the emergence of Homo sapiens to the present. Harari examines how biology, culture, money, and empires shaped who we are today.",
-    review:
-      "Genuinely mind-expanding. Harari has a gift for making enormous ideas feel clear and personal. The chapters on the agricultural revolution completely changed how I see modern society.",
-    rating: 5,
-    dateAdded: "2025-10-25",
-    palette: "cover-amber",
-    featured: false,
-    image: null,
-  },
-];
-
-const WISHLIST_SEED = [
-  {
-    id: "bw1",
-    title: "The Name of the Wind",
-    author: "Patrick Rothfuss",
-    genre: "Fantasy",
-    notes: "Everyone keeps recommending this one.",
-    palette: "cover-indigo",
-    image: null,
-  },
-  {
-    id: "bw2",
-    title: "Flowers for Algernon",
-    author: "Daniel Keyes",
-    genre: "Science Fiction",
-    notes: "I have heard it is heartbreaking.",
-    palette: "cover-rose",
-    image: null,
-  },
-  {
-    id: "bw3",
-    title: "The Remains of the Day",
-    author: "Kazuo Ishiguro",
-    genre: "Literary Fiction",
-    notes: "Same author as Never Let Me Go — must read.",
-    palette: "cover-slate",
-    image: null,
-  },
-];
 
 function sortByRating(arr) {
   return [...arr].sort(
@@ -150,8 +61,13 @@ function formatDate(iso) {
 function isNew(iso) {
   return (Date.now() - new Date(iso)) / 86400000 <= 21;
 }
+const LEGACY_SEED_IDS = new Set(["bw1", "bw2", "bw3"]);
+
 function loadWishlist() {
-  return readJSON("books_wishlist", WISHLIST_SEED) || WISHLIST_SEED;
+  const stored = readJSON("books_wishlist", []) || [];
+  const cleaned = stored.filter((item) => !LEGACY_SEED_IDS.has(item.id));
+  if (cleaned.length !== stored.length) writeJSON("books_wishlist", cleaned);
+  return cleaned;
 }
 function saveWishlist(list) {
   writeJSON("books_wishlist", list);
@@ -531,11 +447,28 @@ function WishlistModal({ onClose, onAdd }) {
 
 export default function Books() {
   const [tab, setTab] = useState("read");
-  const [books, setBooks] = useState(() => sortByRating(MY_BOOKS));
+  const [books, setBooks] = useState([]);
   const [wishlist, setWishlist] = useState(loadWishlist);
   const [showWriteModal, setShowWriteModal] = useState(false);
   const [showWishlistModal, setShowWishlistModal] = useState(false);
   const [markingAsRead, setMarkingAsRead] = useState(null);
+  const [aiSuggestions, setAiSuggestions] = useState(null);
+  const [aiLoading, setAiLoading] = useState(false);
+  const [showAiPanel, setShowAiPanel] = useState(false);
+
+  const fetchAiSuggestions = async () => {
+    setShowAiPanel(true);
+    setAiLoading(true);
+    setAiSuggestions(null);
+    try {
+      const { data } = await api.post("/ai/suggest", { type: "books", items: books });
+      setAiSuggestions(data.suggestions);
+    } catch {
+      setAiSuggestions([]);
+    } finally {
+      setAiLoading(false);
+    }
+  };
 
   const addBook = (book) => setBooks((prev) => sortByRating([book, ...prev]));
 
@@ -560,9 +493,9 @@ export default function Books() {
   const rest = books.filter((b) => b.id !== featured?.id);
 
   const totalRead = books.length;
-  const avgRating = (
-    books.reduce((s, b) => s + b.rating, 0) / books.length
-  ).toFixed(1);
+  const avgRating = books.length
+    ? (books.reduce((s, b) => s + b.rating, 0) / books.length).toFixed(1)
+    : "—";
   const fiveStars = books.filter((b) => b.rating === 5).length;
 
   return (
@@ -616,6 +549,9 @@ export default function Books() {
                 }}
               >
                 <Bookmark size={16} /> View Wishlist
+              </button>
+              <button className="hero-cta-ghost" onClick={fetchAiSuggestions}>
+                <Sparkles size={16} /> AI Suggest
               </button>
             </div>
           </div>
@@ -732,8 +668,15 @@ export default function Books() {
                 <div className="no-books-icon">
                   <BookOpen />
                 </div>
-                <h3>No more books yet</h3>
-                <p>Log another book you have read.</p>
+                <h3>No books logged yet</h3>
+                <p>Start by logging the first book you have read.</p>
+                <button
+                  className="hero-cta"
+                  style={{ marginTop: "1rem" }}
+                  onClick={() => setShowWriteModal(true)}
+                >
+                  <PenLine size={15} /> Log a Book
+                </button>
               </div>
             ) : (
               <div className="book-grid">
@@ -862,6 +805,59 @@ export default function Books() {
                   </div>
                 </div>
               ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* ── AI Suggestions Panel ── */}
+      {showAiPanel && (
+        <div className="books-section">
+          <div className="section-header">
+            <div>
+              <p className="section-eyebrow">Powered by Claude AI</p>
+              <h2 className="section-title" style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                <Sparkles size={22} style={{ color: "#4e7e40" }} /> Books You Might Love
+              </h2>
+            </div>
+            <button
+              className="add-book-btn"
+              onClick={fetchAiSuggestions}
+              disabled={aiLoading}
+            >
+              {aiLoading ? <Loader2 size={16} className="spin" /> : <Sparkles size={16} />}
+              {aiLoading ? "Thinking…" : "Refresh"}
+            </button>
+          </div>
+
+          {aiLoading ? (
+            <div className="no-books">
+              <Loader2 size={36} className="spin" style={{ color: "#4e7e40" }} />
+              <p style={{ marginTop: "1rem", color: "#7a6a50" }}>Claude is reading your taste…</p>
+            </div>
+          ) : aiSuggestions && aiSuggestions.length > 0 ? (
+            <div className="book-grid">
+              {aiSuggestions.map((s, i) => (
+                <div key={i} className="book-card" style={{ border: "1.5px solid #d4c5a9" }}>
+                  <div className={`card-cover-art ${COVER_PALETTES[i % COVER_PALETTES.length]}`}
+                    style={{ borderRadius: "8px 8px 0 0" }}>
+                    <span className="card-cover-title">{s.title}</span>
+                    <span className="card-cover-author">{s.author}</span>
+                  </div>
+                  <div className="card-body">
+                    <span className="book-genre-tag">{s.genre}</span>
+                    <h3 className="card-title" style={{ marginTop: "0.5rem" }}>{s.title}</h3>
+                    <div className="card-author"><User size={11} /> {s.author}</div>
+                    <p className="card-desc" style={{ marginTop: "0.5rem", fontStyle: "italic" }}>
+                      {s.reason}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="no-books">
+              <p>Could not load suggestions. Make sure the backend is running and your API key is set.</p>
             </div>
           )}
         </div>

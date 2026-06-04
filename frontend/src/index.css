@@ -142,3 +142,10 @@ button {
 .slide-in-up {
   animation: slideInUp 0.4s ease-out;
 }
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+.spin {
+  animation: spin 1s linear infinite;
+}

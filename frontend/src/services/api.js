@@ -22,8 +22,12 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
+    const url = error.config?.url || ''
+    const isAuthEndpoint = url.includes('/auth/login') || url.includes('/auth/register')
+    // Only redirect on 401 for protected routes, never during login/register itself
+    if (error.response?.status === 401 && !isAuthEndpoint) {
       localStorage.removeItem('authToken')
+      localStorage.removeItem('authUserId')
       window.location.href = '/login'
     }
     return Promise.reject(error)

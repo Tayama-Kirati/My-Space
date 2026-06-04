@@ -11,6 +11,7 @@ import {
   UploadCloud,
   Search,
   X,
+  Sparkles,
 } from "lucide-react";
 import {
   adToBs,
@@ -137,6 +138,7 @@ function FeaturedMonth({
   bsYear,
   bsMonth,
   entryDates,
+  entryImages,
   onDateClick,
   image,
   onUploadImage,
@@ -252,7 +254,10 @@ function FeaturedMonth({
               >
                 <span className="jnl-bs-num">{bsDay}</span>
                 <span className="jnl-ad-num">{adD}</span>
-                {hasEntry && <span className="dot" />}
+                {hasEntry && entryImages?.[key]
+                  ? <img src={entryImages[key]} alt="" className="entry-dot-img" />
+                  : hasEntry && <span className="dot" />
+                }
               </button>
             );
           })}
@@ -401,6 +406,7 @@ export default function Journal() {
   const [bsMonth, setBsMonth] = useState(todayBs.month);
 
   const [entryDates, setEntryDates] = useState(new Set());
+  const [entryImages, setEntryImages] = useState({});
   const [recentEntries, setRecentEntries] = useState([]);
   const [monthImages, setMonthImages] = useState(loadMonthImages);
   const [searchQuery, setSearchQuery] = useState("");
@@ -410,6 +416,12 @@ export default function Journal() {
   useEffect(() => {
     const index = getEntryIndex();
     setEntryDates(new Set(index));
+    const imageMap = {};
+    index.forEach((k) => {
+      const e = getEntry(k);
+      if (e?.images?.length > 0) imageMap[k] = e.images[0];
+    });
+    setEntryImages(imageMap);
     const recent = index
       .sort((a, b) => b.localeCompare(a))
       .slice(0, 6)
@@ -618,6 +630,7 @@ export default function Journal() {
               bsYear={bsYear}
               bsMonth={bsMonth}
               entryDates={entryDates}
+              entryImages={entryImages}
               onDateClick={(k) => navigate(`/journal/${k}`)}
               image={monthImages[`${bsYear}-${bsMonth}`]}
               onUploadImage={handleUploadImage}
@@ -645,6 +658,12 @@ export default function Journal() {
               >
                 Go to Today
               </button>
+              <button
+                onClick={() => navigate("/journal/memories")}
+                className="flex items-center gap-2 px-3 py-2.5 rounded-xl font-semibold text-sm transition-colors border border-primary-200 text-primary-700 hover:bg-primary-50"
+              >
+                <Sparkles size={15} /> Memories
+              </button>
             </div>
             <div className="mt-6 text-center">
               <p className="text-3xl font-bold text-primary-600">
@@ -658,7 +677,7 @@ export default function Journal() {
         </div>
 
         {/* Mobile write button */}
-        <div className="flex gap-3 mb-8 md:hidden">
+        <div className="flex gap-3 mb-8 md:hidden flex-wrap">
           <button
             onClick={() => navigate(`/journal/${tkAd}`)}
             className="flex-1 flex items-center justify-center gap-2 bg-primary-600 text-white px-4 py-3 rounded-xl font-semibold text-sm"
@@ -674,53 +693,14 @@ export default function Journal() {
           >
             Go to Today
           </button>
+          <button
+            onClick={() => navigate("/journal/memories")}
+            className="flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl font-semibold text-sm border border-primary-200 text-primary-700 hover:bg-primary-50 transition-colors"
+          >
+            <Sparkles size={15} /> Memories
+          </button>
         </div>
 
-        {/* ── Year overview (12 BS months) ── */}
-        <div className="mb-10">
-          <div className="flex items-center gap-3 mb-4">
-            <button
-              onClick={() => setBsYear((y) => y - 1)}
-              className="p-2 bg-white rounded-xl shadow-sm border border-gray-200 hover:bg-primary-50 transition-colors"
-            >
-              <ChevronLeft size={16} className="text-gray-600" />
-            </button>
-            <h2
-              className="text-xl font-bold text-gray-800"
-              style={{ fontFamily: "'Playfair Display', serif" }}
-            >
-              {bsYear} BS
-            </h2>
-            <button
-              onClick={() => setBsYear((y) => y + 1)}
-              className="p-2 bg-white rounded-xl shadow-sm border border-gray-200 hover:bg-primary-50 transition-colors"
-            >
-              <ChevronRight size={16} className="text-gray-600" />
-            </button>
-            <span className="text-xs text-gray-400 hidden sm:block">
-              Click a month card to jump to it · hover to upload its cover
-            </span>
-          </div>
-
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-            {Array.from({ length: 12 }).map((_, i) => {
-              const bsM = i + 1;
-              return (
-                <MiniMonth
-                  key={bsM}
-                  bsYear={bsYear}
-                  bsMonth={bsM}
-                  entryDates={entryDates}
-                  onDateClick={(k) => navigate(`/journal/${k}`)}
-                  image={monthImages[`${bsYear}-${bsM}`]}
-                  onUploadImage={handleUploadImage}
-                  isActive={bsM === bsMonth}
-                  onSelect={() => setBsMonth(bsM)}
-                />
-              );
-            })}
-          </div>
-        </div>
 
         {/* ── Recent entries ── */}
         <div className="bg-white rounded-3xl shadow-sm border border-primary-100 p-8">

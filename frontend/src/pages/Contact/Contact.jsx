@@ -31,7 +31,7 @@ export default function Contact() {
       <section className="contact-hero">
         <h1 className="contact-hero-title">Get in Touch 🌿</h1>
         <p className="contact-hero-sub">
-          Have a question, a thought, or just want to say hello from wherever you are in the world?
+          Tried the site? I'd love to hear what you think — share a review, suggest improvements, or just say hello from wherever you are in the world.
         </p>
       </section>
 
@@ -50,7 +50,7 @@ export default function Contact() {
         {/* Form */}
         <div className="contact-form-card">
           <p className="contact-form-title">Send a Message</p>
-          <p className="contact-form-sub">Fill in the details below and I'll get back to you.</p>
+          <p className="contact-form-sub">Have feedback, a feature idea, or spotted a bug? Fill in the form and I'll get back to you.</p>
 
           <form onSubmit={handleSubmit}>
             <div className="contact-form-row">

@@ -253,6 +253,18 @@
   background: #2e5aa8;
 }
 .jnl-date-cell.today .dot { background: #fff; }
+.jnl-date-cell .entry-dot-img {
+  position: absolute;
+  bottom: 3px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1.5px solid #fff;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.18);
+}
 
 /* ── Mini month cards ── */
 .jnl-mini-card {

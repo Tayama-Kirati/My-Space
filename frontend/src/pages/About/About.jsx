@@ -6,11 +6,11 @@ import Footer from '../../components/Navbar/Footer/Footer'
 import { PenLine, Timer, Library, GalleryThumbnails, Film, Mail, ArrowRight } from 'lucide-react'
 
 const SECTIONS = [
-  { emoji: '🌿', icon: PenLine, title: 'Journal',      path: '/journal',  desc: 'A private writing space for daily reflections, ideas, and personal notes — date-stamped and kept just for me.' },
-  { emoji: '🌱', icon: Timer,   title: 'Focus Garden',  path: '/pomodoro', desc: 'Pomodoro timer with a focus garden that grows with every completed session. Work in sprints, earn plants.' },
-  { emoji: '📖', icon: Library, title: 'Book Shelf',    path: '/books',    desc: 'A reading log with cover art, personal reviews, star ratings, and a wishlist for books I want to read.' },
-  { emoji: '🌸', icon: GalleryThumbnails, title: 'Memories', path: '/memories', desc: 'A photo gallery to save moments that matter — trips, people, and everyday things worth remembering.' },
-  { emoji: '🎬', icon: Film,    title: 'Movie Log',     path: '/movies',   desc: 'Track every film watched. Reviews, ratings, a watchlist, and a Ghibli-inspired archive of cinema memories.' },
+  { emoji: '🌿', icon: PenLine, title: 'Journal',      path: '/journal',  desc: 'Your private writing space for daily reflections, ideas, and personal notes — date-stamped and always yours.' },
+  { emoji: '🌱', icon: Timer,   title: 'Focus Garden',  path: '/pomodoro', desc: 'A Pomodoro timer with a focus garden that grows with every session you complete. Work in sprints, earn plants.' },
+  { emoji: '📖', icon: Library, title: 'Book Shelf',    path: '/books',    desc: 'Your reading log with cover art, personal reviews, star ratings, and a wishlist for books you want to read.' },
+  { emoji: '🌸', icon: GalleryThumbnails, title: 'Memories', path: '/memories', desc: 'A photo gallery to save the moments that matter to you — trips, people, and everyday things worth keeping.' },
+  { emoji: '🎬', icon: Film,    title: 'Movie Log',     path: '/movies',   desc: 'Track every film you watch. Reviews, ratings, a watchlist, and a Ghibli-inspired archive of your cinema memories.' },
 ]
 
 const INTERESTS = [
@@ -35,7 +35,7 @@ export default function About() {
           <div className="about-hero-avatar">🌿</div>
           <h1 className="about-hero-title">Hi, I'm Tayama</h1>
           <p className="about-hero-sub">
-            I built this personal space to keep my thoughts, reading log, focus sessions, and favourite memories in one place — all mine, all private, all Ghibli-themed.
+            I built this space so you can keep your thoughts, reading log, focus sessions, and favourite memories in one place — all yours, all private, all Ghibli-themed.
           </p>
         </div>
       </section>
@@ -46,11 +46,11 @@ export default function About() {
           <div className="about-two-col">
             <div>
               <span className="about-label">✦ About Me ✦</span>
-              <h2 className="about-h2">A Little Background</h2>
+              <h2 className="about-h2">Why I Built This</h2>
               <div className="about-desc" style={{ marginTop: 16 }}>
-                <p>I'm a developer based in Nepal who loves building things for personal use as much as for work. This site started as a way to replace the scattered mix of apps I was using — notes here, a timer there, a reading spreadsheet somewhere else.</p>
-                <p>Now it's a single place where I write my journal each day, log the books I read with honest ratings, use the Pomodoro timer when I need to focus, and keep a gallery of moments I want to remember.</p>
-                <p>Built with React and styled with a Ghibli-inspired watercolour palette — because personal tools should feel like a cosy corner of the internet, not a SaaS dashboard.</p>
+                <p>I'm a developer based in Nepal who wanted to build something genuinely useful — not just another productivity app, but a cosy corner of the internet where people can actually feel at home.</p>
+                <p>This site gives you a single place to write your journal each day, log the books you read with honest ratings, use the Pomodoro timer when you need to focus, and keep a gallery of moments you want to remember.</p>
+                <p>Built with React and styled with a Ghibli-inspired watercolour palette — because tools you use every day should feel warm and personal, not like a SaaS dashboard.</p>
               </div>
             </div>
 
@@ -75,7 +75,7 @@ export default function About() {
           <div style={{ textAlign: 'center', marginBottom: 8 }}>
             <span className="about-label">✦ The Site ✦</span>
             <h2 className="about-h2">What's Inside</h2>
-            <p className="about-desc" style={{ maxWidth: 480, margin: '0 auto' }}>Five sections, each solving a different part of daily life.</p>
+            <p className="about-desc" style={{ maxWidth: 480, margin: '0 auto' }}>Five sections, each solving a different part of your daily life.</p>
           </div>
           <div className="about-cards-grid">
             {SECTIONS.map(({ emoji, title, path, desc }) => (
@@ -97,7 +97,7 @@ export default function About() {
           <span className="about-label">✦ Stack ✦</span>
           <h2 className="about-h2">How It's Built</h2>
           <p className="about-desc">
-            A simple, fast React + Vite setup styled with Tailwind CSS. No backend — all data lives in localStorage. Fast, offline-capable, and completely private.
+            A simple, fast React + Vite setup styled with Tailwind CSS. Your data stays in your browser's localStorage — no accounts needed, offline-capable, and completely private.
           </p>
           <div className="about-tech-pills">
             {TECH.map(t => <span key={t} className="about-tech-pill">{t}</span>)}
@@ -108,8 +108,8 @@ export default function About() {
       {/* ── CTA ── */}
       <section className="about-section dark" style={{ textAlign: 'center' }}>
         <span className="about-cta-label">✦ Nepal ✦</span>
-        <h2 className="about-cta-title">Made with care in Kathmandu</h2>
-        <p className="about-cta-sub">Have a question or just want to say hello?</p>
+        <h2 className="about-cta-title">Made with care in Kathmandu, for you</h2>
+        <p className="about-cta-sub">Have a suggestion, found a bug, or just want to say hello?</p>
         <Link to="/contact" className="about-cta-btn">
           <Mail size={16} /> Get in Touch <ArrowRight size={14} />
         </Link>
