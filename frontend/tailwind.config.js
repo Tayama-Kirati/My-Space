@@ -1,46 +1,72 @@
+import forms from "@tailwindcss/forms";
+import typography from "@tailwindcss/typography";
+
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
       colors: {
-        primary: {
-          50: "#f0f7ff",
-          100: "#e0eeff",
-          200: "#c1ddff",
-          300: "#a2ccff",
-          400: "#83bbff",
-          500: "#4a90e2",
-          600: "#2e5aa8",
-          700: "#1e3f7f",
-          800: "#122656",
-          900: "#0a1835",
+        // ── Moss & Paper tokens (driven by CSS variables so the theme
+        //    switcher in SettingsContext can recolour the whole design) ──
+        bg: "var(--c-bg)",
+        surface: "var(--c-surface)",
+        sunk: "var(--c-sunk)",
+        line: "var(--c-line)",
+        ink: {
+          DEFAULT: "var(--c-ink)",
+          2: "var(--c-ink2)",
+          3: "var(--c-ink3)",
         },
-        secondary: {
-          50: "#f5f3ff",
-          100: "#ede9ff",
-          200: "#ddd3ff",
-          300: "#cdbbff",
-          400: "#b099ff",
-          500: "#8b5cf6",
-          600: "#7c3aed",
-          700: "#6d28d9",
-          800: "#5b21b6",
-          900: "#3f0f8c",
+        moss: {
+          DEFAULT: "var(--c-moss)",
+          d: "var(--c-moss-d)",
+          t: "var(--c-moss-t)",
+        },
+        clay: {
+          DEFAULT: "var(--c-clay)",
+          t: "var(--c-clay-t)",
+          ink: "var(--c-clay-ink)",
+        },
+        sky: {
+          DEFAULT: "var(--c-sky)",
+          t: "var(--c-sky-t)",
+          ink: "var(--c-sky-ink)",
+        },
+        gold: "var(--c-gold)",
+        recap: {
+          bg: "var(--c-recap-bg)",
+          fg: "var(--c-recap-fg)",
+          mute: "var(--c-recap-mute)",
+        },
+
+        // ── Legacy palette kept so any not-yet-migrated markup still builds ──
+        primary: {
+          50: "var(--c-moss-t)",
+          100: "var(--c-moss-t)",
+          200: "var(--c-moss-t)",
+          500: "var(--c-moss)",
+          600: "var(--c-moss)",
+          700: "var(--c-moss-d)",
+          800: "var(--c-moss-d)",
+          900: "var(--c-moss-d)",
         },
       },
       fontFamily: {
-        sans: ["Inter", "system-ui", "sans-serif"],
+        serif: ["var(--font-heading)", "Fraunces", "Georgia", "serif"],
+        sans: ["var(--font-body)", "Inter", "system-ui", "sans-serif"],
+      },
+      borderRadius: {
+        card: "16px",
+        hero: "24px",
+        ctl: "10px",
       },
       boxShadow: {
-        sm: "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
-        base: "0 1px 3px 0 rgba(0, 0, 0, 0.1)",
-        md: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
-        lg: "0 10px 15px -3px rgba(0, 0, 0, 0.1)",
-        xl: "0 20px 25px -5px rgba(0, 0, 0, 0.1)",
-        "2xl": "0 25px 50px -12px rgba(0, 0, 0, 0.1)",
+        card: "0 1px 2px rgba(35,28,20,.08)",
+        cover: "0 1px 2px rgba(35,28,20,.12), 0 6px 16px rgba(35,28,20,.08)",
+        pola: "0 10px 24px rgba(0,0,0,.35)",
       },
     },
   },
-  plugins: [require("@tailwindcss/forms"), require("@tailwindcss/typography")],
+  plugins: [forms, typography],
 };

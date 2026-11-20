@@ -1,240 +1,140 @@
-import React, { useState, useRef } from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import React, { useState, useRef, useEffect } from "react";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import {
-  Menu, X, Home, BookOpen, Info, MessageSquare,
-  PenLine, Timer, Camera, Library, Film,
-  LogOut, User,
-} from 'lucide-react'
-import { useAuth } from '../../hooks/useAuth.jsx'
-import './Navbar.css'
+  Leaf, Home, PenLine, Timer, BookOpen, Film, Camera,
+  Search, Info, Mail, LogOut, Settings, User,
+} from "lucide-react";
+import clsx from "clsx";
+import { useAuth } from "../../hooks/useAuth.jsx";
+import { useSettings } from "../../contexts/SettingsContext";
 
-const TOP_LINKS = [
-  { path: '/',        label: 'Home',    icon: Home },
-  { path: '/about',   label: 'About',   icon: Info },
-  { path: '/contact', label: 'Contact', icon: MessageSquare },
-]
+const LINKS = [
+  { to: "/", label: "Today", icon: Home, end: true },
+  { to: "/journal", label: "Journal", icon: PenLine },
+  { to: "/pomodoro", label: "Focus", icon: Timer },
+  { to: "/books", label: "Books", icon: BookOpen },
+  { to: "/movies", label: "Films", icon: Film },
+  { to: "/memories", label: "Memories", icon: Camera },
+];
 
-const SIDEBAR_LINKS = [
-  { path: '/journal',  label: 'Journal',  icon: PenLine,  dot: 'dot-journal' },
-  { path: '/pomodoro', label: 'Pomodoro', icon: Timer,    dot: 'dot-pomodoro' },
-  { path: '/memories', label: 'Memories', icon: Camera,   dot: 'dot-memories' },
-  { path: '/books',    label: 'Books',    icon: Library,  dot: 'dot-books' },
-  { path: '/movies',   label: 'Movies',   icon: Film,     dot: 'dot-movies' },
-]
+export default function Navbar() {
+  const { user, logout } = useAuth();
+  const { setPanelOpen } = useSettings();
+  const navigate = useNavigate();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef(null);
 
-const Navbar = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(false)
-  const [confirmOpen, setConfirmOpen] = useState(false)
-  const location = useLocation()
-  const navigate = useNavigate()
-  const { user, logout } = useAuth()
+  useEffect(() => {
+    const onDoc = (e) => {
+      if (menuRef.current && !menuRef.current.contains(e.target)) setMenuOpen(false);
+    };
+    document.addEventListener("mousedown", onDoc);
+    return () => document.removeEventListener("mousedown", onDoc);
+  }, []);
 
-  const displayName = user?.firstName || user?.username || 'My'
-  const siteName = `${displayName}'s Space`
+  const initial = (user?.firstName || user?.username || "T").charAt(0).toUpperCase();
 
-  const isActive = (path) => location.pathname === path ||
-    (path !== '/' && location.pathname.startsWith(path))
+  const handleSignOut = () => {
+    setMenuOpen(false);
+    logout();
+    navigate("/login", { replace: true });
+  };
 
-  const closeSidebar = () => setSidebarOpen(false)
-
-  const handleLogout = () => setConfirmOpen(true)
-
-  const confirmLogout = () => {
-    setConfirmOpen(false)
-    logout()
-    navigate('/login', { replace: true })
-  }
+  const linkClass = ({ isActive }) =>
+    clsx(
+      "inline-flex items-center gap-1.5 min-h-[40px] px-3 rounded-[9px] text-sm transition-colors",
+      isActive
+        ? "bg-moss-t text-moss-d font-semibold"
+        : "text-ink-2 font-medium hover:bg-sunk hover:text-ink"
+    );
 
   return (
-    <>
-      {/* ── Top navbar ── */}
-      <header className="sticky top-0 z-50 shadow-sm border-b-2" style={{ background: '#fdfcf8', borderColor: '#d4c5a9' }}>
-        <div className="container-fluid py-0">
-          <nav className="flex justify-between items-center h-16">
+    <header className="app-topbar sticky top-0 z-20 border-b border-line">
+      <div className="wrap flex items-center gap-6 flex-wrap py-2 min-h-[64px]">
+        {/* Logo */}
+        <Link to="/" className="flex items-center gap-2.5 text-ink hover:text-ink">
+          <span className="w-[34px] h-[34px] rounded-ctl bg-moss text-white flex items-center justify-center">
+            <Leaf size={18} />
+          </span>
+          <span className="font-serif font-medium text-[19px]">Tayama's Space</span>
+        </Link>
 
-            {/* Left: sidebar toggle + logo */}
-            <div className="flex items-center gap-3">
-              <button
-                className="nb-toggle"
-                onClick={() => setSidebarOpen(true)}
-                title="Open menu"
-                aria-label="Open sidebar"
-              >
-                <Menu size={22} />
-              </button>
-
-              <Link to="/" className="group flex items-center gap-2">
-                <div className="rounded-lg p-2 group-hover:shadow-lg transition-shadow" style={{ background: 'linear-gradient(135deg, #6aab55, #3d6632)' }}>
-                  <BookOpen className="text-white" size={22} />
-                </div>
-                <h1 className="text-xl font-bold" style={{ fontFamily: "'Playfair Display', serif", color: '#2a1f15' }}>
-                  {displayName}
-                </h1>
-              </Link>
-            </div>
-
-            {/* Centre: Home / About / Contact (desktop) */}
-            <div className="hidden md:flex items-center gap-7">
-              {TOP_LINKS.map(({ path, label, icon: Icon }) => (
-                <Link
-                  key={path}
-                  to={path}
-                  className={`flex items-center gap-1.5 text-sm font-medium transition-all duration-200 ${
-                    isActive(path) ? 'border-b-2 pb-0.5' : 'hover:opacity-80'
-                  }`}
-                  style={isActive(path)
-                    ? { color: '#4e7e40', borderColor: '#4e7e40' }
-                    : { color: '#5a4a35' }}
-                >
-                  <Icon size={16} />
-                  {label}
-                </Link>
-              ))}
-            </div>
-
-            {/* Right: account dropdown / login */}
-            <div className="flex items-center gap-2">
-              {user ? (
-                <div className="nb-account-wrap hidden md:block">
-                  <button className="nb-account-btn">
-                    <User size={15} /> {displayName}
-                  </button>
-                  <div className="nb-dropdown">
-                    <Link to="/account" className="nb-dropdown-item">
-                      <User size={14} /> My Account
-                    </Link>
-                    <button className="nb-dropdown-item" onClick={handleLogout}>
-                      <LogOut size={14} /> Logout
-                    </button>
-                  </div>
-                </div>
-              ) : (
-                <div className="hidden md:flex items-center gap-2">
-                  <Link to="/login" className="nb-auth-link inline-flex items-center gap-1.5 text-sm">
-                    Login
-                  </Link>
-                  <Link
-                    to="/signup"
-                    className="inline-flex items-center px-3 py-1.5 rounded-lg text-sm font-semibold text-white transition-colors"
-                    style={{ background: '#4e7e40' }}
-                  >
-                    Sign Up
-                  </Link>
-                </div>
-              )}
-            </div>
-          </nav>
-
-        </div>
-      </header>
-
-      {/* ── Sidebar overlay ── */}
-      {sidebarOpen && (
-        <div className="sidebar-overlay" onClick={closeSidebar} />
-      )}
-
-      {/* ── Sidebar drawer ── */}
-      <aside className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
-
-        {/* Sidebar header */}
-        <div className="sidebar-header">
-          <Link to="/" className="sidebar-logo" onClick={closeSidebar}>
-            <div className="sidebar-logo-icon">
-              <BookOpen size={18} color="#fff" />
-            </div>
-            <span className="sidebar-logo-text">{siteName}</span>
-          </Link>
-          <button className="sidebar-close" onClick={closeSidebar} aria-label="Close sidebar">
-            <X size={18} />
-          </button>
-        </div>
-
-        {/* Sidebar links */}
-        <div className="sidebar-body">
-          <p className="sidebar-section-label">My Space</p>
-
-          {SIDEBAR_LINKS.map(({ path, label, icon: Icon, dot }) => (
-            <Link
-              key={path}
-              to={path}
-              onClick={closeSidebar}
-              className={`sidebar-link ${isActive(path) ? 'active' : ''}`}
-            >
-              <Icon size={18} className="sidebar-link-icon" />
+        {/* Sections */}
+        <nav className="flex gap-0.5 flex-1 flex-wrap" aria-label="Sections">
+          {LINKS.map(({ to, label, icon: Icon, end }) => (
+            <NavLink key={to} to={to} end={end} className={linkClass}>
+              <Icon size={16} />
               {label}
-              <span className={`sidebar-dot ${dot}`} />
-            </Link>
+            </NavLink>
           ))}
+        </nav>
 
-          <div style={{ borderTop: '1px solid rgba(255,255,255,0.07)', margin: '0.75rem 0.6rem' }} />
-
-          <p className="sidebar-section-label">Site</p>
-          {TOP_LINKS.map(({ path, label, icon: Icon }) => (
-            <Link
-              key={path}
-              to={path}
-              onClick={closeSidebar}
-              className={`sidebar-link ${isActive(path) ? 'active' : ''}`}
-            >
-              <Icon size={18} className="sidebar-link-icon" />
-              {label}
-            </Link>
-          ))}
-        </div>
-
-        {/* Sidebar footer — logout */}
-        <div className="sidebar-footer">
-          {user && (
-            <div className="sidebar-auth-row">
-              <span className="text-xs text-white/60 flex items-center gap-1.5 px-1">
-                <User size={13} /> {displayName}
-              </span>
-              <button
-                onClick={() => { closeSidebar(); handleLogout() }}
-                className="sidebar-login-btn w-full justify-center mt-2"
-              >
-                <LogOut size={15} /> Logout
-              </button>
-            </div>
-          )}
-        </div>
-      </aside>
-      {/* ── Logout confirmation dialog ── */}
-      {confirmOpen && (
-        <div
-          className="fixed inset-0 z-[200] flex items-center justify-center"
-          style={{ background: 'rgba(0,0,0,0.45)' }}
-          onClick={() => setConfirmOpen(false)}
-        >
-          <div
-            className="bg-white rounded-2xl shadow-2xl p-8 max-w-xs w-full mx-4 text-center"
-            onClick={e => e.stopPropagation()}
+        {/* Right */}
+        <div className="flex items-center gap-1.5">
+          <button
+            type="button"
+            aria-label="Search"
+            onClick={() => setPanelOpen(true)}
+            className="w-11 h-11 flex items-center justify-center rounded-ctl text-ink-2 hover:bg-sunk hover:text-ink transition-colors"
           >
-            <div className="text-4xl mb-3">👋</div>
-            <h2 className="text-lg font-bold text-gray-800 mb-1" style={{ fontFamily: "'Playfair Display', serif" }}>
-              Leaving so soon?
-            </h2>
-            <p className="text-sm text-gray-500 mb-6">Are you sure you want to log out?</p>
-            <div className="flex gap-3">
-              <button
-                onClick={() => setConfirmOpen(false)}
-                className="flex-1 px-4 py-2.5 rounded-xl border border-gray-200 text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors"
-              >
-                Stay
-              </button>
-              <button
-                onClick={confirmLogout}
-                className="flex-1 px-4 py-2.5 rounded-xl text-sm font-semibold text-white transition-colors"
-                style={{ background: '#4e7e40' }}
-              >
-                Yes, logout
-              </button>
-            </div>
+            <Search size={18} />
+          </button>
+          <div className="relative" ref={menuRef}>
+            <button
+              type="button"
+              aria-label="Account menu"
+              aria-haspopup="true"
+              aria-expanded={menuOpen}
+              onClick={() => setMenuOpen((v) => !v)}
+              className="w-9 h-9 rounded-full bg-clay-t text-clay-ink flex items-center justify-center font-bold text-sm"
+            >
+              {initial}
+            </button>
+            {menuOpen && (
+              <div className="absolute right-0 mt-2 w-48 bg-surface border border-line rounded-card shadow-cover py-1.5 z-30">
+                <MenuItem as={Link} to="/about" icon={Info} onClick={() => setMenuOpen(false)}>
+                  About
+                </MenuItem>
+                <MenuItem as={Link} to="/contact" icon={Mail} onClick={() => setMenuOpen(false)}>
+                  Contact
+                </MenuItem>
+                <MenuItem
+                  as="button"
+                  icon={Settings}
+                  onClick={() => { setMenuOpen(false); setPanelOpen(true); }}
+                >
+                  Settings
+                </MenuItem>
+                <div className="my-1 border-t border-line" />
+                {user ? (
+                  <MenuItem as="button" icon={LogOut} onClick={handleSignOut}>
+                    Sign out
+                  </MenuItem>
+                ) : (
+                  <MenuItem as={Link} to="/login" icon={User} onClick={() => setMenuOpen(false)}>
+                    Sign in
+                  </MenuItem>
+                )}
+              </div>
+            )}
           </div>
         </div>
-      )}
-    </>
-  )
+      </div>
+    </header>
+  );
 }
 
-export default Navbar
+function MenuItem({ as: Comp = "button", icon: Icon, children, className, ...rest }) {
+  return (
+    <Comp
+      className={clsx(
+        "w-full flex items-center gap-2.5 px-4 py-2 text-sm text-ink-2 hover:bg-sunk hover:text-ink text-left transition-colors",
+        className
+      )}
+      {...rest}
+    >
+      {Icon ? <Icon size={15} /> : null}
+      {children}
+    </Comp>
+  );
+}

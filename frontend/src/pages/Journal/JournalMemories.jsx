@@ -13,7 +13,6 @@ import {
   bsToAd,
   bsMonthName,
   bsMonthLength,
-  adMonthsForBsMonth,
 } from "../../utils/nepaliDate";
 import { readJSON, writeJSON } from "../../utils/authPersistence";
 import "./Journal.css";
@@ -40,9 +39,6 @@ function toKey(adYear, adMonth0, adDay) {
 }
 function getEntryIndex() {
   return readJSON("journal_index", []);
-}
-function getEntry(k) {
-  return readJSON(`journal_${k}`, null);
 }
 function loadMonthImages() {
   return readJSON("journal_month_images", {});

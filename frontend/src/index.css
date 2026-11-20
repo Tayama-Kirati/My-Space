@@ -2,115 +2,180 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ──────────────────────────────────────────────────────────────
+   Design tokens — "Moss & Paper"
+   Defaults live here; SettingsContext overrides them per theme so
+   the theme switcher recolours the whole redesign.
+   ────────────────────────────────────────────────────────────── */
+:root {
+  --c-bg: #f7f3ea;
+  --c-surface: #fffdf8;
+  --c-sunk: #f0eadd;
+  --c-line: #e4d9c6;
+
+  --c-ink: #231c14;
+  --c-ink2: #54483a;
+  --c-ink3: #6b5e4e;
+
+  --c-moss: #3e6b39;
+  --c-moss-d: #2f5530;
+  --c-moss-t: #e6eedd;
+
+  --c-clay: #a9512b;
+  --c-clay-t: #f6e5da;
+  --c-clay-ink: #8a3f1f;
+
+  --c-sky: #2f5d8a;
+  --c-sky-t: #e2ecf5;
+  --c-sky-ink: #244b70;
+
+  --c-gold: #9a6f18;
+
+  --c-recap-bg: #2a231b;
+  --c-recap-fg: #f3ede2;
+  --c-recap-mute: #cfc3af;
+
+  --font-heading: "Fraunces", Georgia, serif;
+  --font-body: "Inter", system-ui, sans-serif;
+}
+
 * {
-  margin: 0;
-  padding: 0;
   box-sizing: border-box;
 }
 
 html,
 body,
 #root {
-  width: 100%;
-  height: 100%;
+  min-height: 100%;
 }
 
 body {
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  background-color: #f9fafb;
-  color: #1f2937;
-  line-height: 1.6;
+  margin: 0;
+  font-family: var(--font-body);
+  background-color: var(--c-bg);
+  color: var(--c-ink);
+  line-height: 1.55;
+  font-size: 15px;
+  -webkit-font-smoothing: antialiased;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: "Poppins", sans-serif;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
 }
 
-/* Smooth transitions */
-a,
-button {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Scrollbar styling */
+/* Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
 }
-
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: var(--c-bg);
 }
-
 ::-webkit-scrollbar-thumb {
-  background: #ccc;
-  border-radius: 4px;
+  background: var(--c-line);
+  border-radius: 5px;
+  border: 2px solid var(--c-bg);
 }
-
 ::-webkit-scrollbar-thumb:hover {
-  background: #888;
+  background: var(--c-ink3);
 }
 
-/* Utility classes */
 @layer components {
+  /* ── Shared redesign helpers ── */
+  .wrap {
+    @apply mx-auto w-full;
+    max-width: 1200px;
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+  @media (max-width: 760px) {
+    .wrap {
+      padding-left: 18px;
+      padding-right: 18px;
+    }
+  }
+
+  /* Translucent, blurred sticky bars */
+  .app-topbar {
+    background: color-mix(in srgb, var(--c-bg) 94%, transparent);
+    backdrop-filter: blur(8px);
+  }
+
+  /* Image placeholder: diagonal paper stripes */
+  .ph-stripes {
+    background: repeating-linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--c-line) 55%, var(--c-sunk)) 0 10px,
+      var(--c-sunk) 10px 20px
+    );
+  }
+
+  /* Masonry for the Memories gallery */
+  .masonry {
+    columns: 3 260px;
+    column-gap: 20px;
+  }
+  .masonry > * {
+    break-inside: avoid;
+    margin-bottom: 20px;
+  }
+
+  .eyebrow {
+    @apply text-ink-3 font-semibold uppercase;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+  }
+
+  /* ── Legacy compatibility (older admin/ui bits), rebased on tokens ── */
   .container-fluid {
     @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
   }
-
   .btn-base {
-    @apply inline-flex items-center justify-center font-medium rounded-lg transition-colors duration-200;
+    @apply inline-flex items-center justify-center font-medium rounded-ctl transition-colors duration-200;
   }
-
   .btn-primary {
-    @apply btn-base bg-primary-500 text-white hover:bg-primary-600 disabled:opacity-50 disabled:cursor-not-allowed px-4 py-2;
+    @apply btn-base bg-moss text-white hover:bg-moss-d disabled:opacity-50 disabled:cursor-not-allowed px-4 py-2;
   }
-
   .btn-secondary {
-    @apply btn-base bg-gray-200 text-gray-900 hover:bg-gray-300 px-4 py-2;
+    @apply btn-base bg-sunk text-ink hover:bg-line px-4 py-2;
   }
-
   .btn-outline {
-    @apply btn-base border-2 border-primary-500 text-primary-500 hover:bg-primary-50 px-4 py-2;
+    @apply btn-base border border-line text-moss hover:bg-moss-t px-4 py-2;
   }
-
   .card {
-    @apply bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow;
+    @apply bg-surface rounded-card border border-line p-6;
   }
-
   .heading-1 {
-    @apply text-4xl font-bold text-gray-900;
+    @apply text-4xl font-bold text-ink;
   }
-
   .heading-2 {
-    @apply text-3xl font-bold text-gray-900;
+    @apply text-3xl font-bold text-ink;
   }
-
   .heading-3 {
-    @apply text-2xl font-bold text-gray-900;
+    @apply text-2xl font-bold text-ink;
   }
-
   .text-muted {
-    @apply text-gray-600;
+    @apply text-ink-2;
   }
-
   .badge {
     @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium;
   }
-
   .badge-primary {
-    @apply badge bg-primary-100 text-primary-800;
+    @apply badge bg-moss-t text-moss-d;
   }
-
   .badge-success {
-    @apply badge bg-green-100 text-green-800;
+    @apply badge bg-moss-t text-moss-d;
   }
-
   .badge-warning {
-    @apply badge bg-yellow-100 text-yellow-800;
+    @apply badge bg-clay-t text-clay-ink;
   }
-
   .badge-danger {
-    @apply badge bg-red-100 text-red-800;
+    @apply badge bg-clay-t text-clay-ink;
   }
 }
 
@@ -123,7 +188,6 @@ button {
     opacity: 1;
   }
 }
-
 @keyframes slideInUp {
   from {
     opacity: 0;
@@ -134,17 +198,16 @@ button {
     transform: translateY(0);
   }
 }
-
 .fade-in {
   animation: fadeIn 0.3s ease-in-out;
 }
-
 .slide-in-up {
   animation: slideInUp 0.4s ease-out;
 }
-
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 .spin {
   animation: spin 1s linear infinite;

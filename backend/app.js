@@ -6,6 +6,7 @@ const authRoutes = require("./routes/auth");
 const postRoutes = require("./routes/posts");
 const mediaRoutes = require("./routes/media");
 const userRoutes = require("./routes/users");
+const aiRoutes = require("./routes/ai");
 
 const app = express();
 
@@ -37,7 +38,14 @@ app.use(helmet({
 // CORS
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL,
+    origin: (origin, callback) => {
+      // Allow any localhost port in development, or the configured FRONTEND_URL in production
+      if (!origin || origin.startsWith("http://localhost:") || origin === process.env.FRONTEND_URL) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   }),
 );
@@ -56,6 +64,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/media", mediaRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/ai", aiRoutes);
 
 // Health check
 app.get("/health", (req, res) => {

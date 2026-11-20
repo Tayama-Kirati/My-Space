@@ -1,7 +1,8 @@
 import React from "react";
 import { BrowserRouter, Navigate, Routes, Route } from "react-router-dom";
-import "./App.css";
 import { ToastProvider } from "./components/Toast";
+import { SettingsProvider } from "./contexts/SettingsContext";
+import SettingsPanel from "./components/SettingsPanel/SettingsPanel";
 
 import Home from "./pages/Home/Home";
 import About from "./pages/About/About";
@@ -25,21 +26,9 @@ function AdminDashboard() {
         <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {[
-            {
-              label: "Total Posts",
-              value: "24",
-              color: "bg-primary-50 text-primary-700",
-            },
-            {
-              label: "Active Users",
-              value: "512",
-              color: "bg-green-50 text-green-700",
-            },
-            {
-              label: "Media Files",
-              value: "138",
-              color: "bg-purple-50 text-purple-700",
-            },
+            { label: "Total Posts", value: "24", color: "bg-primary-50 text-primary-700" },
+            { label: "Active Users", value: "512", color: "bg-green-50 text-green-700" },
+            { label: "Media Files", value: "138", color: "bg-purple-50 text-purple-700" },
           ].map(({ label, value, color }) => (
             <div key={label} className={`rounded-xl p-6 ${color}`}>
               <p className="text-sm font-medium opacity-70">{label}</p>
@@ -58,90 +47,50 @@ function AdminDashboard() {
 
 function App() {
   return (
-    <ToastProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Login defaultTab="signup" />} />
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route
-            path="/contact"
-            element={
-              <ProtectedRoute>
-                <Contact />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/journal"
-            element={
-              <ProtectedRoute>
-                <Journal />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/journal/memories"
-            element={
-              <ProtectedRoute>
-                <JournalMemories />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/journal/:date"
-            element={
-              <ProtectedRoute>
-                <JournalEntry />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/pomodoro"
-            element={
-              <ProtectedRoute>
-                <Pomodoro />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/books"
-            element={
-              <ProtectedRoute>
-                <Books />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/movies"
-            element={
-              <ProtectedRoute>
-                <Movies />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/memories"
-            element={
-              <ProtectedRoute>
-                <Memories />
-              </ProtectedRoute>
-            }
-          />
+    <SettingsProvider>
+      <ToastProvider>
+        <BrowserRouter>
+          <Routes>
+            {/* Public */}
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Login defaultTab="signup" />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
 
-          <Route
-            path="/admin/*"
-            element={
-              <ProtectedRoute requiredRole="admin">
-                <AdminDashboard />
-              </ProtectedRoute>
-            }
-          />
-          <Route path="*" element={<Navigate to="/login" replace />} />
-        </Routes>
-      </BrowserRouter>
-    </ToastProvider>
+            {/* Dashboard (protected home) */}
+            <Route
+              path="/"
+              element={
+                <ProtectedRoute>
+                  <Home />
+                </ProtectedRoute>
+              }
+            />
+
+            {/* Protected sections */}
+            <Route path="/journal" element={<ProtectedRoute><Journal /></ProtectedRoute>} />
+            <Route path="/journal/memories" element={<ProtectedRoute><JournalMemories /></ProtectedRoute>} />
+            <Route path="/journal/:date" element={<ProtectedRoute><JournalEntry /></ProtectedRoute>} />
+            <Route path="/pomodoro" element={<ProtectedRoute><Pomodoro /></ProtectedRoute>} />
+            <Route path="/books" element={<ProtectedRoute><Books /></ProtectedRoute>} />
+            <Route path="/movies" element={<ProtectedRoute><Movies /></ProtectedRoute>} />
+            <Route path="/memories" element={<ProtectedRoute><Memories /></ProtectedRoute>} />
+
+            <Route
+              path="/admin/*"
+              element={
+                <ProtectedRoute requiredRole="admin">
+                  <AdminDashboard />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </BrowserRouter>
+        <SettingsPanel />
+      </ToastProvider>
+    </SettingsProvider>
   );
 }
 
